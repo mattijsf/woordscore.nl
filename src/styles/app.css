@@ -103,6 +103,9 @@ h2 {
   font-weight: 750;
   letter-spacing: -0.01em;
   margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 p {
   margin: 0;
@@ -114,6 +117,105 @@ p {
 }
 section {
   padding: 34px 0 0;
+}
+
+/* uitleg: onderstreepte termen en i-knopjes openen één paneel */
+.term {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 3px;
+}
+.info {
+  font:
+    italic 700 0.82rem/1 Georgia,
+    serif;
+  letter-spacing: 0;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  padding: 0;
+  cursor: pointer;
+}
+.info.as-text {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  cursor: auto;
+  vertical-align: 1px;
+}
+#tip {
+  border: 0;
+  padding: 0;
+  margin: auto auto 0;
+  width: 100%;
+  max-width: min(560px, 100%);
+  max-height: none;
+  background: none;
+  color: var(--ink);
+}
+#tip::backdrop {
+  background: rgba(8, 14, 11, 0.55);
+}
+.tip-card {
+  background: var(--surface);
+  border-radius: 14px 14px 0 0;
+  max-height: 75vh;
+  overflow: auto;
+  padding: 16px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 620px) {
+  #tip {
+    margin: auto;
+  }
+  .tip-card {
+    border-radius: 14px;
+  }
+}
+.tip-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.tip-head h3 {
+  margin: 0;
+  flex: 1;
+  font-size: 1.2rem;
+  line-height: 1.15;
+}
+#tip-back,
+#tip-close {
+  font: inherit;
+  font-weight: 650;
+  color: var(--ink);
+  background: var(--empty);
+  border: 0;
+  border-radius: 6px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 12px;
+  cursor: pointer;
+}
+#tip-body p {
+  font-size: 0.98rem;
+  margin: 0 0 10px;
+}
+#tip-body p:last-child {
+  margin: 0;
 }
 
 /* hero */
@@ -177,6 +279,11 @@ section {
 }
 
 /* periodekeuze */
+.period .wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .period {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
@@ -498,6 +605,13 @@ dd {
   font-size: 0.84rem;
   color: var(--muted);
   font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.award .info {
+  margin: -4px -3px -4px 0;
 }
 .award .v {
   font-size: 1.55rem;

@@ -1,6 +1,7 @@
 import { COLORS } from "../../lib/board.ts"
 import { nf, pc } from "../../lib/format.ts"
 import type { Period, Player } from "../../types/board.ts"
+import { Term } from "../tips/Term.tsx"
 
 const turnsLabel = (i: number): string => (i < 6 ? String(i + 1) : "X")
 const days = (n: number): string => `${n} ${n === 1 ? "dag" : "dagen"}`
@@ -27,19 +28,21 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
           </span>
           <span className="facts">
             <span>
-              <b>{p.games}</b> potjes
+              <b>{p.games}</b> <Term tip="potje">potjes</Term>
             </span>
             <span>
-              <b>{pc(p.solved / p.games)}</b> geraden
+              <b>{pc(p.solved / p.games)}</b> <Term tip="geraden">geraden</Term>
             </span>
             <span>
-              <b>{p.wins}</b> dagzeges
+              <b>{p.wins}</b> <Term tip="dagzege">dagzeges</Term>
             </span>
           </span>
         </span>
         <span className="avg">
           {nf(p.avg)}
-          <small>gemiddeld</small>
+          <small>
+            <Term tip="gemiddelde">gemiddeld</Term>
+          </small>
         </span>
         <span className="stack" role="img" aria-label={label}>
           {p.dist.map((c, i) =>
@@ -53,7 +56,12 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
         <span className="toggle">
           <span className="o">Meer cijfers</span>
           <span className="c">Minder cijfers</span>
-          {p.qual ? "" : " (te weinig potjes voor het klassement)"}
+          {p.qual ? null : (
+            <>
+              {" "}
+              (te weinig potjes voor het <Term tip="klassement">klassement</Term>)
+            </>
+          )}
         </span>
       </summary>
       <div className="more">
@@ -68,25 +76,39 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
           ))}
         </div>
         <dl>
-          <dt>Deelname</dt>
+          <dt>
+            <Term tip="deelname">Deelname</Term>
+          </dt>
           <dd>{pc(p.part)} van de puzzels</dd>
-          <dt>Dagzeges alleen</dt>
+          <dt>
+            <Term tip="alleen">Dagzeges alleen</Term>
+          </dt>
           <dd>{p.solo}</dd>
-          <dt>Langste reeks</dt>
+          <dt>
+            <Term tip="reeks">Langste reeks</Term>
+          </dt>
           <dd>{days(p.best)}</dd>
           {P.kind === "closed" ? null : (
             <>
-              <dt>Huidige reeks</dt>
+              <dt>
+                <Term tip="huidig">Huidige reeks</Term>
+              </dt>
               <dd>{days(p.cur)}</dd>
             </>
           )}
-          <dt>Als eerste gedeeld</dt>
+          <dt>
+            <Term tip="eerste">Als eerste gedeeld</Term>
+          </dt>
           <dd>{p.first}×</dd>
-          <dt>Na de eerste beurt</dt>
+          <dt>
+            <Term tip="opener">Na de eerste beurt</Term>
+          </dt>
           <dd>
             {nf(p.greens)} groen, {nf(p.yellows)} geel
           </dd>
-          <dt>Deelt meestal rond</dt>
+          <dt>
+            <Term tip="tijdstip">Deelt meestal rond</Term>
+          </dt>
           <dd>{p.median}</dd>
         </dl>
       </div>

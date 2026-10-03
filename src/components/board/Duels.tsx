@@ -1,5 +1,6 @@
 import { ranked } from "../../lib/ranking.ts"
 import { usePeriod } from "../../store/useViewStore.ts"
+import { Info } from "../tips/Info.tsx"
 
 export function Duels(): React.JSX.Element {
   const P = usePeriod()
@@ -8,11 +9,10 @@ export function Duels(): React.JSX.Element {
     .map(p => p.name)
   return (
     <section>
-      <h2>Onderlinge duels</h2>
-      <p className="hint">
-        Lees per rij: gewonnen en verloren tegen de speler in de kolom, op dagen dat allebei
-        speelden. Gelijke dagen tellen niet mee.
-      </p>
+      <h2>
+        Onderlinge duels <Info tip="duels" name="onderlinge duels" />
+      </h2>
+      <p className="hint">Gewonnen–verloren van de rij tegen de kolom.</p>
       <div className="scroll">
         <table className="duel">
           <thead>

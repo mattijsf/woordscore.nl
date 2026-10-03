@@ -1,5 +1,6 @@
 import { PERIOD_KEYS, periodOf } from "../../lib/board.ts"
 import { useViewStore } from "../../store/useViewStore.ts"
+import { Info } from "../tips/Info.tsx"
 
 export function PeriodNav(): React.JSX.Element {
   const period = useViewStore(state => state.period)
@@ -21,6 +22,7 @@ export function PeriodNav(): React.JSX.Element {
             </button>
           ))}
         </div>
+        <Info tip="periode" name="periode" />
       </div>
     </nav>
   )

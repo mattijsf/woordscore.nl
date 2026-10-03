@@ -6,6 +6,7 @@ import { Trend } from "./components/board/Trend.tsx"
 import { Footer } from "./components/layout/Footer.tsx"
 import { Hero } from "./components/layout/Hero.tsx"
 import { PeriodNav } from "./components/layout/PeriodNav.tsx"
+import { TipSheet } from "./components/tips/TipSheet.tsx"
 import { useDocumentTitle } from "./hooks/useDocumentTitle.ts"
 import { useHashPeriod } from "./hooks/useHashPeriod.ts"
 import { data } from "./lib/board.ts"
@@ -27,6 +28,7 @@ export function App(): React.JSX.Element {
         <Outliers />
         <Footer />
       </main>
+      <TipSheet />
     </>
   )
 }

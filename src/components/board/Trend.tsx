@@ -1,6 +1,6 @@
-import { data } from "../../lib/board.ts"
 import { ranked } from "../../lib/ranking.ts"
 import { usePeriod, useViewStore } from "../../store/useViewStore.ts"
+import { Info } from "../tips/Info.tsx"
 import { PlayerChip } from "./PlayerChip.tsx"
 import { TrendChart } from "./TrendChart.tsx"
 
@@ -11,11 +11,10 @@ export function Trend(): React.JSX.Element {
   const withLine = ranked(P).filter(p => P.trend[p.name]?.some(v => v != null))
   return (
     <section>
-      <h2>Verloop per maand</h2>
-      <p className="hint">
-        Gemiddeld aantal beurten per maand, voor maanden met minstens {data.rules.minPerMonth}{" "}
-        potjes. Tik op een naam om die lijn uit te lichten.
-      </p>
+      <h2>
+        Verloop per maand <Info tip="verloop" name="verloop per maand" />
+      </h2>
+      <p className="hint">Gemiddelde per maand. Tik op een naam om die lijn uit te lichten.</p>
       <div className="chips">
         {withLine.map(p => (
           <PlayerChip
