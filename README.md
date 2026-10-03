@@ -96,7 +96,7 @@ puzzle,date,player,turns,shared,grid
 | `shared` | moment van delen, `JJJJ-MM-DDTUU:MM`; mag leeg                        |
 | `grid`   | de rijen, `G` groen, `Y` geel, `-` mis, gescheiden door `/`; mag leeg |
 
-- De volgorde van de regels is de volgorde van delen: wie binnen een puzzel bovenaan staat was eerst.
+- Wie binnen een puzzel als eerste deelde, volgt uit `shared`. Bij hetzelfde tijdstip, of zonder `shared`, telt de volgorde van de regels.
 - Eén regel per speler per puzzel; een dubbele regel is een fout.
 - Zonder `shared` telt de regel niet mee voor het tijdstip van delen, zonder `grid` niet voor de opener.
 - Staat er een `grid`, dan moet het aantal rijen kloppen met `turns` en alleen de laatste rij van een geraden woord helemaal groen zijn.

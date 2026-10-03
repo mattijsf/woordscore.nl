@@ -1,6 +1,6 @@
 // The trophy cabinet: who leads a period on one figure each.
 import type { Award, Month, Player } from "../types/board.ts"
-import { list, nl } from "./format.ts"
+import { list, nl, share } from "./format.ts"
 
 interface AwardOptions {
   lowest?: boolean
@@ -68,7 +68,7 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
     ...award(
       "Trouwste speler",
       p => p.games,
-      p => `${Math.round(p.part * 100)}%`,
+      p => share(p.games, puzzles),
       p => `${p.games} van de ${puzzles} puzzels gedeeld`
     ),
     ...award(
@@ -81,13 +81,13 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
       "Beste opener",
       p => p.greens + p.yellows,
       p => nl(p.greens + p.yellows),
-      () => "gekleurde vakjes gemiddeld na de eerste beurt"
+      () => "gekleurde vakjes in de eerste rij, gemiddeld"
     ),
     ...award(
       "Nachtuil",
       minute,
       p => p.median,
-      () => "doorsnee tijdstip van delen",
+      () => "middelste tijdstip van delen",
       {
         among: timed,
       }
@@ -96,7 +96,7 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
       "Vroegste vogel",
       minute,
       p => p.median,
-      () => "doorsnee tijdstip van delen",
+      () => "middelste tijdstip van delen",
       {
         lowest: true,
         among: timed,
@@ -120,14 +120,14 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
       p => p.cold,
       p => `${p.cold}×`,
       () =>
-        `eerste rij helemaal grijs${saved ? `; daarna vaakst toch binnen drie beurten: ${savers} (${saved}×)` : ""}`,
+        `eerste rij helemaal grijs${saved ? `; daarna het vaakst toch in hooguit drie beurten klaar: ${savers} (${saved}×)` : ""}`,
       { skipZero: true }
     ),
     ...award(
       "Meest constant",
       p => Math.round(p.sd * 1e6) / 1e6,
       p => nl(p.sd),
-      () => "kleinste spreiding in aantal beurten",
+      () => "scores verschillen het minst van elkaar",
       { lowest: true }
     ),
     ...award(
@@ -144,7 +144,7 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
       "Langste pauze",
       p => p.gap,
       p => `${p.gap} ${p.gap === 1 ? "dag" : "dagen"}`,
-      p => `niets gedeeld vanaf ${p.gapFrom}`,
+      p => `achter elkaar niets gedeeld, vanaf ${p.gapFrom}`,
       { skipZero: true }
     ),
   ]
@@ -157,7 +157,7 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
       note:
         closest.length > 1
           ? closest.map(([pair, dates]) => `${pair} op ${list(dates)}`).join("; ")
-          : `exact hetzelfde vakjespatroon op ${list(closest[0]?.[1] ?? [])}`,
+          : `precies dezelfde vakjes op ${list(closest[0]?.[1] ?? [])}`,
     })
   }
   const aces = eligible.filter(p => p.ones.length)

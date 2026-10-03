@@ -57,11 +57,28 @@ const weekday = (day: number): number => (day + 3) % 7 // 0 = Monday; 1 January 
 const greens = (row: string): number => (row.match(/G/g) ?? []).length
 const mean = (xs: number[]): number => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0)
 const count = <T>(xs: T[], test: (x: T) => boolean): number => xs.filter(test).length
+/** Compares two strings by their UTF-16 code units, as < and > do. */
+const compare = (a: string, b: string): number => {
+  if (a < b) {
+    return -1
+  }
+  return a > b ? 1 : 0
+}
 const clock = (minute: number): string =>
   `${String(Math.floor(minute / 60)).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`
 
 function toGames(rows: Score[], rules: Rules): Game[] {
-  return rows.map(row => {
+  // In the order the scores were shared, whatever order the rows arrived in: an upload can add
+  // an older score at the end of the file. Rows without a time count as shared last.
+  const moment = (row: Score): string => row.shared || "~"
+  const ordered = rows
+    .map((row, index) => ({ row, index }))
+    .sort(
+      (a, b) =>
+        a.row.puzzle - b.row.puzzle || compare(moment(a.row), moment(b.row)) || a.index - b.index
+    )
+    .map(({ row }) => row)
+  return ordered.map(row => {
     const opening = row.grid.split("/")[0] ?? ""
     return {
       player: row.player,
