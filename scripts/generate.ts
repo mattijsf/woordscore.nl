@@ -458,7 +458,11 @@ function awards(players: Player[], puzzles: number, twins: Map<string, string[]>
       title: "Gedachtenlezers",
       who: list(closest.map(([pair]) => pair)),
       value: `${most}×`,
-      note: `exact hetzelfde vakjespatroon op dezelfde dag: ${closest.map(([, dates]) => list(dates)).join("; ")}`,
+      // with several pairs, say which date belongs to which pair
+      note:
+        closest.length > 1
+          ? closest.map(([pair, dates]) => `${pair} op ${list(dates)}`).join("; ")
+          : `exact hetzelfde vakjespatroon op ${list(closest[0]?.[1] ?? [])}`,
     })
   }
   const aces = eligible.filter(p => p.ones.length)
