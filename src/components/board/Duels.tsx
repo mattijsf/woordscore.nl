@@ -1,0 +1,59 @@
+import { ranked } from "../../lib/ranking.ts"
+import { usePeriod } from "../../store/useViewStore.ts"
+
+export function Duels(): React.JSX.Element {
+  const P = usePeriod()
+  const names = ranked(P)
+    .filter(p => p.qual)
+    .map(p => p.name)
+  return (
+    <section>
+      <h2>Onderlinge duels</h2>
+      <p className="hint">
+        Lees per rij: gewonnen en verloren tegen de speler in de kolom, op dagen dat allebei
+        speelden. Gelijke dagen tellen niet mee.
+      </p>
+      <div className="scroll">
+        <table className="duel">
+          <thead>
+            <tr>
+              <th />
+              {names.map(n => (
+                <th key={n} scope="col">
+                  {n}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {names.map(a => (
+              <tr key={a}>
+                <th scope="row">{a}</th>
+                {names.map(b => {
+                  if (a === b) {
+                    return (
+                      <td key={b} className="self">
+                        ·
+                      </td>
+                    )
+                  }
+                  const [w, t, l] = P.h2h[`${a}|${b}`] ?? [0, 0, 0]
+                  const tone = w === l ? "even" : ""
+                  return (
+                    <td
+                      key={b}
+                      className={w > l ? "lead" : tone}
+                      title={`${a} tegen ${b}: ${w} gewonnen, ${t} gelijk, ${l} verloren`}
+                    >
+                      {w}–{l}
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}

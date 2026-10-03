@@ -1,0 +1,29 @@
+// Checking rules shared by every project. target, lib, types and include differ per project and
+// stay in each project's own tsconfig.
+{
+  "compilerOptions": {
+    // nothing here is compiled by tsc: vite bundles the page, node strips the types of scripts
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "incremental": true,
+    "skipLibCheck": true
+  }
+}

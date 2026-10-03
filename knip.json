@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["scripts/*.ts", "functions/**/*.ts", "cron/*.ts", "src/data.d.json.ts"],
+  "project": [
+    "src/**/*.{ts,tsx}",
+    "server/**/*.ts",
+    "scripts/**/*.ts",
+    "functions/**/*.ts",
+    "cron/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "ignoreDependencies": ["@fontsource-variable/bricolage-grotesque"]
+}

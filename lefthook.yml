@@ -1,0 +1,32 @@
+# Installed by `npm install` (the prepare script). Skip once with LEFTHOOK=0 git commit ...
+pre-commit:
+  piped: true
+  commands:
+    format:
+      priority: 1
+      glob: "*.{js,ts,tsx,json,css,html,md,yml}"
+      run: npx prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+    lint:
+      priority: 2
+      glob: "*.{js,ts,tsx}"
+      run: npx eslint --cache --max-warnings=0 --no-warn-ignored --fix {staged_files}
+      stage_fixed: true
+    typecheck:
+      priority: 3
+      glob: "*.{ts,tsx}"
+      run: npx tsc -b
+
+# Checks the whole tree, not only what changed, so nothing unformatted, unsorted or failing
+# leaves this machine.
+pre-push:
+  parallel: true
+  commands:
+    format:
+      run: npx prettier --check .
+    lint:
+      run: npx eslint --cache --max-warnings=0 .
+    typecheck:
+      run: npx tsc -b
+    unused:
+      run: npx knip
