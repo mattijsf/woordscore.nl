@@ -1,5 +1,6 @@
 {
   "title": "Woordle-groep",
+  "api": "/api/woordle",
   "rules": {
     "failAs": 7,
     "minShare": 0.1,

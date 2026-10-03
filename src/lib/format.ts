@@ -13,3 +13,9 @@ export const share = (part: number, whole: number): string => {
 
 /** How a failed game is written in the figures; the page shows it as X. */
 export const FAILED = 7
+
+/** "a", "a en b", "a, b en c" */
+export const list = (xs: string[]): string =>
+  xs.length === 1 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} en ${xs.at(-1) ?? ""}`
+/** Two decimals with a comma, as in an award: 3,87 */
+export const nl = (x: number): string => x.toFixed(2).replace(".", ",")

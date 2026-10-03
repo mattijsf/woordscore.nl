@@ -67,9 +67,12 @@ export default defineConfig(
     languageOptions: { globals: globals.browser },
   },
   {
-    files: ["scripts/**", "vite.config.ts"],
+    files: ["scripts/**", "server/**", "vite.config.ts"],
     languageOptions: { globals: globals.node },
+  },
+  {
     // the scripts are command-line tools: what they print is their output
+    files: ["scripts/**"],
     rules: { "no-console": "off" },
   },
   prettier,

@@ -4,9 +4,6 @@ dist
 .eslintcache
 *.tsbuildinfo
 
-# generated from data/ by `npm run generate`
-src/data.json
-
 # WhatsApp exports contain the whole group chat; only data/scores.csv belongs here
 *.txt
 *.zip

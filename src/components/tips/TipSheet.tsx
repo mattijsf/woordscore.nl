@@ -1,14 +1,14 @@
 import type { MouseEvent } from "react"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { tips } from "../../content/tips.tsx"
-import { data } from "../../lib/board.ts"
+import { useData } from "../../store/useBoardStore.ts"
 import { useTipStore } from "../../store/useTipStore.ts"
 import { InSheet } from "./InSheet.ts"
 
-const TIPS = tips(data)
-
 /** The sheet that shows one explanation at a time. */
 export function TipSheet(): React.JSX.Element {
+  const data = useData()
+  const TIPS = useMemo(() => tips(data), [data])
   const trail = useTipStore(state => state.trail)
   const back = useTipStore(state => state.back)
   const close = useTipStore(state => state.close)

@@ -1,7 +1,7 @@
 import { Fragment, useRef } from "react"
 import { useWidth } from "../../hooks/useWidth.ts"
-import { COLORS } from "../../lib/board.ts"
 import { nf } from "../../lib/format.ts"
+import { useColors } from "../../store/useBoardStore.ts"
 import type { Period } from "../../types/board.ts"
 
 const MARGIN = { l: 30, r: 12, t: 16, b: 38 }
@@ -27,6 +27,7 @@ function Lines({
   focus,
   width: W,
 }: TrendChartProps & { width: number }): React.ReactNode {
+  const COLORS = useColors()
   const H = Math.round(Math.min(Math.max(W * 0.6, 230), 340))
   const m = MARGIN
   const pw = W - m.l - m.r

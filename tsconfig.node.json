@@ -1,11 +1,12 @@
-// Everything that runs on node: the scripts and the vite config.
+// Everything that runs outside the browser: the scripts, the server and the vite config.
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2023",
     "lib": ["ES2023"],
-    "types": ["node"]
+    "types": ["node"],
+    "resolveJsonModule": true
   },
-  "include": ["scripts", "vite.config.ts"]
+  "include": ["scripts", "server", "vite.config.ts"]
 }

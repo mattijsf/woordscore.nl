@@ -1,8 +1,8 @@
-import { data } from "../../lib/board.ts"
+import { useData } from "../../store/useBoardStore.ts"
 import { Term } from "../tips/Term.tsx"
 
 export function Footer(): React.JSX.Element {
-  const { first, last, periods } = data
+  const { first, last, periods } = useData()
   return (
     <footer>
       <p>

@@ -6,8 +6,7 @@
     "target": "ES2023",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
-    // src/data.json is generated; src/data.d.json.ts says what it holds
-    "allowArbitraryExtensions": true,
+    "resolveJsonModule": true,
     "types": ["vite/client"]
   },
   "include": ["src"]

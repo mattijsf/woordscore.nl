@@ -1,15 +1,15 @@
-import { PERIOD_KEYS, periodOf } from "../../lib/board.ts"
-import { useViewStore } from "../../store/useViewStore.ts"
+import { useBoardStore, useData } from "../../store/useBoardStore.ts"
 import { Info } from "../tips/Info.tsx"
 
 export function PeriodNav(): React.JSX.Element {
-  const period = useViewStore(state => state.period)
-  const choosePeriod = useViewStore(state => state.choosePeriod)
+  const { periods } = useData()
+  const period = useBoardStore(state => state.period)
+  const choosePeriod = useBoardStore(state => state.choosePeriod)
   return (
     <nav className="period" aria-label="Periode">
       <div className="wrap">
         <div className="seg">
-          {PERIOD_KEYS.map(key => (
+          {Object.entries(periods).map(([key, P]) => (
             <button
               key={key}
               type="button"
@@ -18,7 +18,7 @@ export function PeriodNav(): React.JSX.Element {
                 choosePeriod(key)
               }}
             >
-              {periodOf(key).name}
+              {P.name}
             </button>
           ))}
         </div>

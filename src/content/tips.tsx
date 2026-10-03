@@ -29,8 +29,37 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
           </p>
           <p>Deelde iemand dezelfde puzzel twee keer, dan telt de eerste keer.</p>
           <p>
+            De scores komen uit een export van de chat. Onderaan de pagina kan iedereen een nieuwe
+            export aanbieden; zie <Term tip="upload">bijwerken</Term>.
+          </p>
+          <p>
             De pagina loopt van puzzel {first} ({periods.all.from_}) tot en met {last} (
             {periods.all.to}).
+          </p>
+        </>
+      ),
+    },
+    upload: {
+      title: "Bijwerken",
+      body: (
+        <>
+          <p>
+            Exporteer de groepschat in WhatsApp zonder media. Op Android: de groep openen, ⋮, Meer,
+            Chat exporteren. Op iPhone: op de groepsnaam tikken, Exporteer chat. Kies daarna dat
+            bestand hier.
+          </p>
+          <p>
+            Het bestand wordt op je eigen apparaat uitgelezen. Alleen de gevonden scores gaan naar
+            mattix.nl: puzzelnummer, voornaam, aantal beurten, tijdstip en de gekleurde vakjes. De
+            berichten zelf worden niet verstuurd.
+          </p>
+          <p>
+            Je ziet eerst hoeveel nieuwe scores er zijn. Pas na “Stand bijwerken” worden ze bewaard
+            en ziet iedereen de nieuwe stand.
+          </p>
+          <p>
+            Bijwerken voegt alleen toe. Een score die er al staat wordt nooit gewijzigd of
+            verwijderd, ook niet als de export iets anders zegt. Iedereen met de link kan bijwerken.
           </p>
         </>
       ),

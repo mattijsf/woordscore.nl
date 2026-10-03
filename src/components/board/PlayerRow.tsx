@@ -1,6 +1,6 @@
-import { COLORS } from "../../lib/board.ts"
 import { nf, share } from "../../lib/format.ts"
 import { WEEKDAYS } from "../../lib/weekdays.ts"
+import { useColors } from "../../store/useBoardStore.ts"
 import type { Period, Player } from "../../types/board.ts"
 import { Term } from "../tips/Term.tsx"
 
@@ -28,6 +28,7 @@ interface PlayerRowProps {
 
 /** One player: the main figures, and everything else when opened. */
 export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React.JSX.Element {
+  const COLORS = useColors()
   const most = Math.max(...p.dist)
   const week = weekdayExtremes(p)
   const label = `Verdeling: ${p.dist.map((c, i) => `${i < 6 ? i + 1 : "niet geraden"}: ${c}`).join(", ")}`

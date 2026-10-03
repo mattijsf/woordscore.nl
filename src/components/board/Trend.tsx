@@ -1,13 +1,13 @@
 import { ranked } from "../../lib/ranking.ts"
-import { usePeriod, useViewStore } from "../../store/useViewStore.ts"
+import { useBoardStore, usePeriod } from "../../store/useBoardStore.ts"
 import { Info } from "../tips/Info.tsx"
 import { PlayerChip } from "./PlayerChip.tsx"
 import { TrendChart } from "./TrendChart.tsx"
 
 export function Trend(): React.JSX.Element {
   const P = usePeriod()
-  const focus = useViewStore(state => state.focus)
-  const toggleFocus = useViewStore(state => state.toggleFocus)
+  const focus = useBoardStore(state => state.focus)
+  const toggleFocus = useBoardStore(state => state.toggleFocus)
   const withLine = ranked(P).filter(p => P.trend[p.name]?.some(v => v != null))
   return (
     <section>

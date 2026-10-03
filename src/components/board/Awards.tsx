@@ -1,5 +1,5 @@
 import { AWARD_TIPS } from "../../content/awards.ts"
-import { usePeriod } from "../../store/useViewStore.ts"
+import { usePeriod } from "../../store/useBoardStore.ts"
 import { Info } from "../tips/Info.tsx"
 
 export function Awards(): React.JSX.Element {

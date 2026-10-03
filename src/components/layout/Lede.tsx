@@ -1,5 +1,5 @@
 import { nf, ni } from "../../lib/format.ts"
-import { usePeriod } from "../../store/useViewStore.ts"
+import { usePeriod } from "../../store/useBoardStore.ts"
 import { Term } from "../tips/Term.tsx"
 
 /** The period in one sentence: how much was played and how it went. */

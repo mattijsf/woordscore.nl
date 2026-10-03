@@ -1,4 +1,4 @@
-import { usePeriod } from "../../store/useViewStore.ts"
+import { usePeriod } from "../../store/useBoardStore.ts"
 import { Info } from "../tips/Info.tsx"
 import { PuzzleTable } from "./PuzzleTable.tsx"
 

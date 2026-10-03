@@ -668,6 +668,42 @@ dd {
   grid-column: 1/-1;
 }
 
+/* bijwerken */
+.upload {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+.btn {
+  font: inherit;
+  font-weight: 650;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.btn.go {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.btn[hidden] {
+  display: none;
+}
+.btn:focus-within {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+#upload-status:empty {
+  display: none;
+}
+
 /* tabellen */
 .scroll {
   overflow-x: auto;
