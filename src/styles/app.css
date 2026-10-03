@@ -581,6 +581,42 @@ dd {
   font-size: 11px;
 }
 
+/* weekdagen */
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 12px;
+  max-width: 520px;
+}
+.week div {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.week b {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: clamp(0.78rem, 3.3vw, 1.05rem);
+  font-weight: 750;
+}
+.week .lo b {
+  background: var(--green);
+  color: #fff;
+}
+.week .hi b {
+  background: var(--miss);
+  color: #fff;
+}
+
 /* prijzen */
 .awards {
   display: grid;

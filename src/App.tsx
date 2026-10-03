@@ -3,6 +3,7 @@ import { Duels } from "./components/board/Duels.tsx"
 import { Outliers } from "./components/board/Outliers.tsx"
 import { Ranking } from "./components/board/Ranking.tsx"
 import { Trend } from "./components/board/Trend.tsx"
+import { Weekdays } from "./components/board/Weekdays.tsx"
 import { Footer } from "./components/layout/Footer.tsx"
 import { Hero } from "./components/layout/Hero.tsx"
 import { PeriodNav } from "./components/layout/PeriodNav.tsx"
@@ -23,6 +24,7 @@ export function App(): React.JSX.Element {
       <main className="wrap">
         <Ranking />
         <Trend />
+        <Weekdays />
         <Awards />
         <Duels />
         <Outliers />

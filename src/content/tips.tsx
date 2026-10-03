@@ -364,6 +364,106 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
         </>
       ),
     },
+    letter: {
+      title: "Op één letter na",
+      body: (
+        <>
+          <p>
+            Het aantal keren dat een woord <Term tip="x">niet geraden</Term> werd terwijl de zesde
+            rij vier groene vakjes had: vier letters goed, één mis.
+          </p>
+        </>
+      ),
+    },
+    koudestart: {
+      title: "Koude start",
+      body: (
+        <>
+          <p>
+            Het aantal potjes waarin de eerste rij helemaal grijs was: geen enkele letter van het
+            startwoord zat in het woord.
+          </p>
+          <p>Erbij staat wie na zo’n start het vaakst toch binnen drie beurten raadde.</p>
+        </>
+      ),
+    },
+    constant: {
+      title: "Meest constant",
+      body: (
+        <>
+          <p>
+            De kleinste spreiding in aantal beurten: de standaarddeviatie, ofwel hoe ver iemands
+            scores doorgaans van het eigen gemiddelde af liggen.
+          </p>
+          <p>
+            Een lage spreiding betekent voorspelbaar, niet per se goed: wie altijd een 5 haalt is
+            constanter dan wie afwisselend 2 en 4 haalt. Een <Term tip="x">X</Term> telt als {fail}.
+          </p>
+        </>
+      ),
+    },
+    bestemaand: {
+      title: "Beste maand",
+      body: (
+        <>
+          <p>
+            De maand met iemands laagste <Term tip="gemiddelde">gemiddeld aantal beurten</Term>. De
+            prijs gaat naar de laagste van iedereen.
+          </p>
+          <p>
+            Alleen maanden met minstens {rules.minBestMonth} potjes tellen mee, anders wint een
+            maand met twee gelukkige dagen.
+          </p>
+        </>
+      ),
+    },
+    pauze: {
+      title: "Langste pauze",
+      body: (
+        <>
+          <p>
+            Het grootste aantal dagen achter elkaar zonder gedeelde score, tussen iemands eerste en
+            laatste potje in de periode.
+          </p>
+          <p>De dagen vóór iemands eerste potje en na het laatste tellen niet als pauze.</p>
+        </>
+      ),
+    },
+    gedachtenlezers: {
+      title: "Gedachtenlezers",
+      body: (
+        <>
+          <p>
+            Het tweetal dat het vaakst op dezelfde dag exact hetzelfde vakjespatroon deelde: elke
+            rij dezelfde kleuren op dezelfde plek.
+          </p>
+          <p>
+            Dat hoeft niet te betekenen dat ze dezelfde woorden probeerden; de vakjes laten alleen
+            de kleuren zien. In één keer raak telt niet mee, want dat patroon is altijd gelijk.
+          </p>
+        </>
+      ),
+    },
+    weekdag: {
+      title: "Per weekdag",
+      body: (
+        <>
+          <p>
+            Het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> over alle potjes van puzzels
+            op die weekdag. Het gaat om de dag van de <Term tip="puzzel">puzzel</Term>, niet om de
+            dag van delen.
+          </p>
+          <p>
+            De verschillen zijn klein. Of een dag echt zwaarder is of dat het toeval is, zegt de
+            pagina niet.
+          </p>
+          <p>
+            Onder “Meer cijfers” staat per speler de beste en de zwaarste weekdag. Een weekdag met
+            minder dan {rules.minPerWeekday} potjes doet daarbij niet mee.
+          </p>
+        </>
+      ),
+    },
     duels: {
       title: "Onderlinge duels",
       body: (

@@ -4,7 +4,9 @@
     "failAs": 7,
     "minShare": 0.1,
     "minPerMonth": 5,
-    "minOutlier": 4
+    "minOutlier": 4,
+    "minPerWeekday": 5,
+    "minBestMonth": 10
   },
   "colors": {
     "Sanne": "#2F7FD6",

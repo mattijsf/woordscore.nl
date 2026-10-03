@@ -87,6 +87,8 @@ puzzle,date,player,turns,shared,grid
 - `rules.minShare`: deel van de puzzels dat je gespeeld moet hebben voor klassement en prijzenkast (0.1)
 - `rules.minPerMonth`: potjes per maand voor een punt in het verloop (5)
 - `rules.minOutlier`: spelers per puzzel voor zwaarste en makkelijkste puzzels (4)
+- `rules.minPerWeekday`: potjes op een weekdag voor iemands beste en zwaarste weekdag (5)
+- `rules.minBestMonth`: potjes in een maand om als beste maand te tellen (10)
 - `colors`: vaste kleur per speler; nieuwe namen krijgen vanzelf een reservekleur
 
 ## Op mattix.nl

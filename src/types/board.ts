@@ -11,6 +11,16 @@ export interface Rules {
   minPerMonth: number
   /** players needed for hardest/easiest puzzles */
   minOutlier: number
+  /** fewer games on a weekday: no best/worst weekday for that player */
+  minPerWeekday: number
+  /** games needed for a month to count as someone's best month */
+  minBestMonth: number
+}
+
+export interface Month {
+  label: string
+  games: number
+  avg: number
 }
 
 export interface Player {
@@ -19,6 +29,8 @@ export interface Player {
   part: number
   solved: number
   avg: number
+  /** standard deviation of the turns */
+  sd: number
   /** games per number of turns, 1 to 6, then the failed ones */
   dist: number[]
   wins: number
@@ -35,6 +47,18 @@ export interface Player {
   fails: number
   qual: boolean
   ones: string[]
+  /** failed with four green squares in the last row */
+  near: number
+  /** first row all grey */
+  cold: number
+  /** of those, solved in three turns or fewer */
+  coldSaved: number
+  bestMonth: Month | null
+  /** longest run of days without a shared score */
+  gap: number
+  gapFrom: string
+  /** average per weekday, Monday first; null below rules.minPerWeekday */
+  weekdays: (number | null)[]
 }
 
 export interface Award {
@@ -69,6 +93,9 @@ export interface Period {
   to: string
   months: string[]
   trend: Record<string, (number | null)[]>
+  /** average per weekday, Monday first */
+  weekday: (number | null)[]
+  weekdayGames: number[]
   players: Player[]
   h2h: Record<string, Duel>
   hard: Puzzle[]

@@ -7,6 +7,7 @@ import type {
   Award,
   BoardData,
   Duel,
+  Month,
   Period,
   PeriodKind,
   Periods,
@@ -30,6 +31,8 @@ const DEFAULTS: Config = {
     minShare: 0.1,
     minPerMonth: 5,
     minOutlier: 4,
+    minPerWeekday: 5,
+    minBestMonth: 10,
   },
   colors: {},
 }
@@ -43,6 +46,7 @@ interface Game {
   turns: number
   failed: boolean
   minute: number | null
+  rows: string[] | null
   green: number | null
   yellow: number | null
 }
@@ -52,6 +56,8 @@ const formatDay = (day: number): string => {
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()] ?? ""} ${d.getUTCFullYear()}`
 }
 const monthKey = (day: number): string => new Date(day * DAY).toISOString().slice(0, 7)
+const weekday = (day: number): number => (day + 3) % 7 // 0 = Monday; 1 January 1970 was a Thursday
+const greens = (row: string): number => (row.match(/G/g) ?? []).length
 const mean = (xs: number[]): number => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0)
 const count = <T>(xs: T[], test: (x: T) => boolean): number => xs.filter(test).length
 const list = (xs: string[]): string =>
@@ -95,7 +101,8 @@ function toGames(
       turns: row.turns === FAIL ? rules.failAs : row.turns,
       failed: row.turns === FAIL,
       minute: row.shared ? +row.shared.slice(11, 13) * 60 + +row.shared.slice(14, 16) : null,
-      green: row.grid ? (opening.match(/G/g) ?? []).length : null,
+      rows: row.grid ? row.grid.split("/") : null,
+      green: row.grid ? greens(opening) : null,
       yellow: row.grid ? (opening.match(/Y/g) ?? []).length : null,
     }
   })
@@ -157,13 +164,40 @@ function period(
       .sort((a, b) => a - b)
     const median = minutes[Math.floor(minutes.length / 2)] ?? null
     const openings = own.filter(g => g.green !== null)
+    const avg = mean(own.map(g => g.turns))
+    const cold = own.filter(g => g.rows?.[0] === "-----")
+    const perMonth = months.map(month =>
+      own.filter(g => monthKey(dayOf(g.number)) === month).map(g => g.turns)
+    )
+    const fullMonths: Month[] = perMonth
+      .map((turns, i) => {
+        const key = months[i] ?? ""
+        return {
+          label: `${MONTHS[+key.slice(5) - 1] ?? ""} ${key.slice(0, 4)}`,
+          games: turns.length,
+          avg: mean(turns),
+        }
+      })
+      .filter(month => month.games >= rules.minBestMonth)
+
+    // longest run of days without a shared score, between someone's first and last game
+    let gap = 0
+    let gapFrom: number | null = null
+    const played = own.map(g => g.number).sort((a, b) => a - b)
+    for (const [i, n] of played.entries()) {
+      const before = played[i - 1]
+      if (before !== undefined && n - before - 1 > gap) {
+        ;[gap, gapFrom] = [n - before - 1, before + 1]
+      }
+    }
 
     players.push({
       name: player,
       games: own.length,
       part: own.length / numbers.length,
       solved: own.length - fails,
-      avg: mean(own.map(g => g.turns)),
+      avg,
+      sd: Math.sqrt(mean(own.map(g => (g.turns - avg) ** 2))),
       dist,
       wins: wins.length,
       solo: count(
@@ -182,12 +216,21 @@ function period(
       fails,
       qual: own.length >= rules.minShare * numbers.length,
       ones: own.filter(g => g.turns === 1).map(g => formatDay(dayOf(g.number))),
+      near: count(own, g => g.failed && g.rows !== null && greens(g.rows.at(-1) ?? "") === 4),
+      cold: cold.length,
+      coldSaved: count(cold, g => !g.failed && g.turns <= 3),
+      bestMonth: fullMonths.toSorted((a, b) => a.avg - b.avg)[0] ?? null,
+      gap,
+      gapFrom: gapFrom === null ? "" : formatDay(dayOf(gapFrom)),
+      weekdays: [0, 1, 2, 3, 4, 5, 6].map(d => {
+        const turns = own.filter(g => weekday(dayOf(g.number)) === d).map(g => g.turns)
+        return turns.length >= rules.minPerWeekday ? mean(turns) : null
+      }),
     })
 
-    trend[player] = months.map(month => {
-      const turns = own.filter(g => monthKey(dayOf(g.number)) === month).map(g => g.turns)
-      return turns.length >= rules.minPerMonth ? Math.round(mean(turns) * 1000) / 1000 : null
-    })
+    trend[player] = perMonth.map(turns =>
+      turns.length >= rules.minPerMonth ? Math.round(mean(turns) * 1000) / 1000 : null
+    )
   }
 
   const h2h: Record<string, Duel> = {}
@@ -207,6 +250,26 @@ function period(
       ]
     }
   }
+
+  // pairs who shared exactly the same grid for a puzzle; a one-row grid is a 1/6, not a coincidence
+  const twins = new Map<string, string[]>() // "A & B" -> dates
+  for (const [n, shared] of byPuzzle) {
+    const grids = [...shared.values()].flatMap(g =>
+      g.rows && g.rows.length >= 2 ? [{ player: g.player, grid: g.rows.join() }] : []
+    )
+    grids.forEach((a, i) => {
+      grids.slice(i + 1).forEach(b => {
+        if (a.grid !== b.grid) {
+          return
+        }
+        const pair = [a.player, b.player].sort().join(" & ")
+        twins.set(pair, [...(twins.get(pair) ?? []), formatDay(dayOf(n))])
+      })
+    })
+  }
+  const byWeekday = [0, 1, 2, 3, 4, 5, 6].map(d =>
+    games.filter(g => weekday(dayOf(g.number)) === d).map(g => g.turns)
+  )
 
   // failed games are written as 7 here whatever rules.failAs says; the page shows 7 as X
   const busy: Puzzle[] = [...byPuzzle]
@@ -234,20 +297,24 @@ function period(
     to: formatDay(dayOf(lastNumber)),
     months: months.map(key => `${MONTHS[+key.slice(5) - 1] ?? ""} '${key.slice(2, 4)}`),
     trend,
+    weekday: byWeekday.map(turns => (turns.length ? mean(turns) : null)),
+    weekdayGames: byWeekday.map(turns => turns.length),
     players,
     h2h,
     hard: busy.toSorted((a, b) => b.avg - a.avg || a.n - b.n).slice(0, 5),
     easy: busy.toSorted((a, b) => a.avg - b.avg || a.n - b.n).slice(0, 5),
-    awards: awards(players, numbers.length),
+    awards: awards(players, numbers.length, twins),
   }
 }
 
 interface AwardOptions {
   lowest?: boolean
   among?: Player[]
+  /** no award when the best value is 0 */
+  skipZero?: boolean
 }
 
-function awards(players: Player[], puzzles: number): Award[] {
+function awards(players: Player[], puzzles: number, twins: Map<string, string[]>): Award[] {
   const eligible = players.filter(p => p.qual)
   if (!eligible.length) {
     return []
@@ -257,19 +324,38 @@ function awards(players: Player[], puzzles: number): Award[] {
     title: string,
     value: (p: Player) => number,
     text: (p: Player) => string,
-    note: (p: Player) => string,
-    { lowest = false, among = eligible }: AwardOptions = {}
+    note: (p: Player, winners: Player[]) => string,
+    { lowest = false, among = eligible, skipZero = false }: AwardOptions = {}
   ): Award[] => {
     const top = Math[lowest ? "min" : "max"](...among.map(value))
+    if (skipZero && top === 0) {
+      return []
+    }
     const winners = among.filter(p => value(p) === top)
     const [winner] = winners
     if (!winner) {
       return []
     }
-    return [{ title, who: list(winners.map(p => p.name)), value: text(winner), note: note(winner) }]
+    return [
+      {
+        title,
+        who: list(winners.map(p => p.name)),
+        value: text(winner),
+        note: note(winner, winners),
+      },
+    ]
   }
   const timed = eligible.filter(p => p.medianMin !== null)
   const minute = (p: Player): number => p.medianMin ?? 0
+  const saved = Math.max(...eligible.map(p => p.coldSaved))
+  const savers = list(eligible.filter(p => p.coldSaved === saved).map(p => p.name))
+  // rounded, so that 52/14 and 78/21 count as the same average
+  const monthAvg = (p: Player): number => Math.round((p.bestMonth?.avg ?? 0) * 1e6) / 1e6
+  const names = new Set(eligible.map(p => p.name))
+  const pairs = [...twins].filter(([pair]) => pair.split(" & ").every(name => names.has(name)))
+  const most = Math.max(0, ...pairs.map(([, dates]) => dates.length))
+  const closest = pairs.filter(([, dates]) => dates.length === most)
+  const month = (p: Player): Month => p.bestMonth ?? { label: "", games: 0, avg: 0 }
 
   const result = [
     ...award(
@@ -327,7 +413,54 @@ function awards(players: Player[], puzzles: number): Award[] {
       p => `${p.six}×`,
       () => "pas in de zesde beurt geraden"
     ),
+    ...award(
+      "Op één letter na",
+      p => p.near,
+      p => `${p.near}×`,
+      () => "niet geraden met vier groene vakjes in de laatste rij",
+      { skipZero: true }
+    ),
+    ...award(
+      "Koude start",
+      p => p.cold,
+      p => `${p.cold}×`,
+      () =>
+        `eerste rij helemaal grijs${saved ? `; daarna vaakst toch binnen drie beurten: ${savers} (${saved}×)` : ""}`,
+      { skipZero: true }
+    ),
+    ...award(
+      "Meest constant",
+      p => Math.round(p.sd * 1e6) / 1e6,
+      p => nl(p.sd),
+      () => "kleinste spreiding in aantal beurten",
+      { lowest: true }
+    ),
+    ...award(
+      "Beste maand",
+      monthAvg,
+      p => nl(month(p).avg),
+      (p, winners) =>
+        winners.length > 1
+          ? winners.map(w => `${w.name} in ${month(w).label} (${month(w).games} potjes)`).join("; ")
+          : `${month(p).label}, ${month(p).games} potjes`,
+      { lowest: true, among: eligible.filter(p => p.bestMonth) }
+    ),
+    ...award(
+      "Langste pauze",
+      p => p.gap,
+      p => `${p.gap} ${p.gap === 1 ? "dag" : "dagen"}`,
+      p => `niets gedeeld vanaf ${p.gapFrom}`,
+      { skipZero: true }
+    ),
   ]
+  if (most) {
+    result.push({
+      title: "Gedachtenlezers",
+      who: list(closest.map(([pair]) => pair)),
+      value: `${most}×`,
+      note: `exact hetzelfde vakjespatroon op dezelfde dag: ${closest.map(([, dates]) => list(dates)).join("; ")}`,
+    })
+  }
   const aces = eligible.filter(p => p.ones.length)
   if (aces.length) {
     result.push({

@@ -11,4 +11,10 @@ export const AWARD_TIPS: Record<string, string> = {
   "Vroegste vogel": "vroegstevogel",
   "Op het nippertje": "nippertje",
   "In één keer raak": "raak",
+  "Op één letter na": "letter",
+  "Koude start": "koudestart",
+  "Meest constant": "constant",
+  "Beste maand": "bestemaand",
+  "Langste pauze": "pauze",
+  Gedachtenlezers: "gedachtenlezers",
 }
