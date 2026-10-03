@@ -1,5 +1,5 @@
 import { COLORS } from "../../lib/board.ts"
-import { nf, pc } from "../../lib/format.ts"
+import { nf, share } from "../../lib/format.ts"
 import { WEEKDAYS } from "../../lib/weekdays.ts"
 import type { Period, Player } from "../../types/board.ts"
 import { Term } from "../tips/Term.tsx"
@@ -45,7 +45,7 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
               <b>{p.games}</b> <Term tip="potje">potjes</Term>
             </span>
             <span>
-              <b>{pc(p.solved / p.games)}</b> <Term tip="geraden">geraden</Term>
+              <b>{share(p.solved, p.games)}</b> <Term tip="geraden">geraden</Term>
             </span>
             <span>
               <b>{p.wins}</b> <Term tip="dagzege">dagzeges</Term>
@@ -93,7 +93,7 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
           <dt>
             <Term tip="deelname">Deelname</Term>
           </dt>
-          <dd>{pc(p.part)} van de puzzels</dd>
+          <dd>{share(p.games, P.puzzles)} van de puzzels</dd>
           <dt>
             <Term tip="alleen">Dagzeges alleen</Term>
           </dt>

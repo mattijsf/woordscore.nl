@@ -361,7 +361,7 @@ function awards(players: Player[], puzzles: number, twins: Map<string, string[]>
     ...award(
       "Langste reeks",
       p => p.best,
-      p => `${p.best} dagen`,
+      p => `${p.best} ${p.best === 1 ? "dag" : "dagen"}`,
       p => `op rij geraden, tot en met ${p.bestEnd}`
     ),
     ...award(
@@ -380,7 +380,7 @@ function awards(players: Player[], puzzles: number, twins: Map<string, string[]>
       "Als eerste klaar",
       p => p.first,
       p => `${p.first}×`,
-      () => "het eerste bericht van de dag"
+      () => "als eerste de score van de dag gedeeld"
     ),
     ...award(
       "Beste opener",

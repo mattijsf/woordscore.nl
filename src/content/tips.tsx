@@ -24,7 +24,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
           </p>
           <p>
             Wat niet gedeeld is, bestaat hier niet. Een potje dat wel gespeeld maar niet gedeeld is,
-            telt als niet gespeeld. Een score die alleen als afbeelding is gedeeld, telt ook niet.
+            telt als niet gespeeld. Een score die alleen als afbeelding is gedeeld, telt ook niet,
+            net als een bericht dat WhatsApp bij het exporteren niet kon tonen.
           </p>
           <p>Deelde iemand dezelfde puzzel twee keer, dan telt de eerste keer.</p>
           <p>
@@ -40,8 +41,9 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
         <>
           <p>De Woordle van één dag, herkenbaar aan het nummer.</p>
           <p>
-            Een puzzel hoort bij de dag van zijn nummer, niet bij het moment van delen. Wie na
-            middernacht deelt, speelde nog de puzzel van de dag ervoor.
+            Een puzzel hoort bij de dag van zijn nummer, niet bij het moment van delen. Een score
+            die pas na middernacht of de volgende ochtend is gedeeld, telt voor de dag van de
+            puzzel.
           </p>
           <p>
             Bovenaan staat op hoeveel puzzels minstens één van jullie een score deelde. Bij{" "}
@@ -89,6 +91,10 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
             In het totaal bovenaan telt een <Term tip="x">niet-geraden woord</Term> als de 6 beurten
             die echt gedaan zijn. In een <Term tip="gemiddelde">gemiddelde</Term> telt het als{" "}
             {fail}.
+          </p>
+          <p>
+            Daardoor komt het totaal gedeeld door het aantal potjes iets lager uit dan het
+            gemiddelde dat ernaast staat.
           </p>
         </>
       ),
@@ -278,6 +284,10 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
           <p>
             Het is het tijdstip van het bericht in de chat. Wanneer er gespeeld is, weet de pagina
             niet.
+          </p>
+          <p>
+            De kloktijd telt: een bericht van vijf over twaalf ’s nachts geldt als vroeg, niet als
+            laat.
           </p>
         </>
       ),
@@ -469,8 +479,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Voor elk tweetal: alle dagen waarop allebei een score deelden. Wie minder beurten nodig
-            had, wint die dag. Een <Term tip="x">X</Term> verliest van elke geraden score.
+            Voor elk tweetal: alle puzzels waarvan allebei een score deelden. Wie minder beurten
+            nodig had, wint die dag. Een <Term tip="x">X</Term> verliest van elke geraden score.
           </p>
           <p>
             In een vak staat gewonnen–verloren van de speler in de rij tegen de speler in de kolom.
