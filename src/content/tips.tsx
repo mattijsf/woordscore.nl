@@ -527,7 +527,7 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
             evenveel rijen, met in elke rij dezelfde kleuren op dezelfde plek.
           </p>
           <p>
-            Dat betekent niet zeker dat ze dezelfde woorden probeerden. De vakjes laten alleen de
+            Ze kunnen daarbij verschillende woorden hebben ingevuld. De vakjes laten alleen de
             kleuren zien, niet de letters.
           </p>
           <p>
