@@ -50,24 +50,29 @@ export async function getBoard(code: string): Promise<Board | null> {
 }
 
 /**
- * Starts a scoreboard under a free code. Answers the key to remove it with, or "" when someone
- * started it a moment ago and these scores were added to theirs.
+ * Starts a scoreboard under a free code, with the names its players get. Answers false when
+ * someone started it a moment ago and these scores were added to theirs.
  */
-export async function startBoard(code: string, rows: Score[], title: string): Promise<string> {
+export async function startBoard(
+  code: string,
+  rows: Score[],
+  title: string,
+  links: Aliases
+): Promise<boolean> {
   const response = await fetch(address(code), {
     method: "POST",
-    headers: { "content-type": "text/csv", "x-title": encodeURIComponent(title) },
+    headers: {
+      "content-type": "text/csv",
+      "x-aliases": encodeURIComponent(JSON.stringify(links)),
+      "x-title": encodeURIComponent(title),
+    },
     body: toCsv(rows),
   })
   if (!response.ok) {
     return refused(response)
   }
   // 201: the code is now ours. 200: someone started it a moment ago, and our scores were added.
-  if (response.status !== 201) {
-    return ""
-  }
-  const { key } = (await response.json()) as { key: string }
-  return key
+  return response.status === 201
 }
 
 /** Adds scores, and links names to players; answers everything the server keeps now. */
@@ -87,8 +92,24 @@ export async function addScores(
   return { aliases: readAliases(response), rows: parseCsv(await response.text(), "server") }
 }
 
-export async function removeBoard(code: string, key: string): Promise<void> {
-  const response = await fetch(address(code), { method: "DELETE", headers: { "x-key": key } })
+/** Gives the scoreboard another name; answers the name as the server keeps it. */
+export async function renameBoard(code: string, title: string): Promise<string> {
+  const response = await fetch(address(code), {
+    method: "PUT",
+    headers: { "x-title": encodeURIComponent(title) },
+  })
+  if (!response.ok) {
+    return refused(response)
+  }
+  return ((await response.json()) as { title: string }).title
+}
+
+/** Removes the scoreboard; `confirm` is the code as the visitor typed it. */
+export async function removeBoard(code: string, confirm: string): Promise<void> {
+  const response = await fetch(address(code), {
+    method: "DELETE",
+    headers: { "x-confirm": confirm },
+  })
   if (!response.ok) {
     await refused(response)
   }

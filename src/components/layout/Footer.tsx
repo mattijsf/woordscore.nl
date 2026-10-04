@@ -1,4 +1,4 @@
-import { startPage } from "../../lib/address.ts"
+import { HOME } from "../../lib/address.ts"
 import type { BoardData } from "../../types/board.ts"
 import { Term } from "../tips/Term.tsx"
 
@@ -11,7 +11,7 @@ export function Footer({ data }: { data: BoardData }): React.JSX.Element {
         {periods.all.to}). <Term tip="bron">Waar komen de cijfers vandaan?</Term>
       </p>
       <p>
-        Woordscore · <a href={startPage()}>Een ander scorebord openen</a> ·{" "}
+        Woordscore · <a href={HOME}>Een ander scorebord openen</a> ·{" "}
         <a href="https://woordle.nl" rel="noopener">
           Woordle spelen op woordle.nl
         </a>

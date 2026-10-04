@@ -16,7 +16,7 @@ vanaf andere apparaten op hetzelfde netwerk. De scoreborden staan dan lokaal in 
 
 De pagina is een React-app (React 19, state in zustand) in TypeScript:
 
-- `src/components/` de onderdelen van de pagina, per gebied (`board/`, `layout/`, `share/`, `start/`, `tips/`, `update/`)
+- `src/components/` de onderdelen van de pagina, per gebied (`board/`, `common/`, `layout/`, `share/`, `start/`, `tips/`, `update/`)
 - `src/store/` de zustand-stores; `src/hooks/` gedeelde hooks
 - `src/content/` de teksten van de uitleg
 - `src/lib/` rekenwerk en opmaak zonder React; `src/types/` de vorm van de gegevens
@@ -35,11 +35,14 @@ tsc op de gewijzigde bestanden, voor een push de hele controle en de tests.
 
 ## Hoe het werkt
 
-De beginpagina vraagt om een code. Bestaat er een scorebord onder die code, dan opent het
-(`?g=<code>`). Is de code nog vrij, dan kan iemand het scorebord beginnen met een export van de
-groepschat. De code is pas bezet als die export minstens twee scores bevat. Wie de code kent, kan
-het scorebord bekijken en er met een nieuwere export scores aan toevoegen. `defaultGroup` in
-`data/config.json` slaat de beginpagina over en opent een vast scorebord.
+De beginpagina vraagt om een code. Bestaat er een scorebord onder die code, dan opent het op
+een eigen adres: `woordscore.nl/<code>`. Is de code nog vrij, dan kan iemand het scorebord
+beginnen met een export van de groepschat. De code is pas bezet als die export minstens twee
+scores bevat. Wie de code kent, kan het scorebord bekijken en er met een nieuwere export scores
+aan toevoegen.
+
+Elk pad dat geen bestand is levert dezelfde pagina; die leest de code uit het adres. Cloudflare
+Pages doet dat vanzelf zolang er geen `404.html` is. Onder `/api/woordle` zit de server.
 
 - De export wordt in de browser uitgelezen (`src/lib/whatsapp.ts`); alleen de scores gaan naar
   de server, de berichten niet. WhatsApp levert een `.zip` met een `.txt` erin, soms een losse `.txt`; beide werken, in
@@ -47,13 +50,17 @@ het scorebord bekijken en er met een nieuwere export scores aan toevoegen. `defa
 - De pagina rekent alles in de browser uit (`src/lib/stats.ts`).
 - De server (`server/woordle.ts`) voegt alleen toe: een bewaarde score wordt nooit gewijzigd of
   verwijderd, en wat binnenkomt moet een geldige score zijn rond de dag van de puzzel.
-- Namen komen uit WhatsApp en kunnen per telefoon of in de tijd verschillen. Bij het bijwerken
-  vraagt de pagina bij een onbekende naam of het een nieuwe speler is of een bestaande onder een
-  andere naam. Zo'n koppeling wordt bij het scorebord bewaard en geldt voor volgende exports.
-- Wie een scorebord begint, krijgt een beheercode. Alleen daarmee kan het worden verwijderd.
+- Namen komen uit WhatsApp en kunnen per telefoon of in de tijd verschillen. Bij het beginnen
+  kiest men per speler de naam op het scorebord. Bij het bijwerken vraagt de pagina bij een
+  onbekende naam of het een nieuwe speler is (met een naam naar keuze) of een bestaande onder een
+  andere naam. Die keuzes worden bij het scorebord bewaard en gelden voor volgende exports.
+- Het scorebord krijgt als naam de groep uit de bestandsnaam van de eerste export, anders de
+  code. Die naam is bij het beginnen en daarna aan te passen.
+- De code is het enige slot. Wie haar kent, kan ook de naam wijzigen en het scorebord
+  verwijderen; voor verwijderen moet de code worden overgetypt.
 
 De server is een Cloudflare Pages Function met een KV-namespace, binding `WOORDLE`. Per
-scorebord: `group:<code>` (naam, datum, hash van de beheercode, gekoppelde namen), `scores:<code>` (de scores) en
+scorebord: `group:<code>` (naam, datum, gekoppelde namen), `scores:<code>` (de scores) en
 `prev:<code>` (de scores voor de laatste wijziging).
 
 ## Testen
@@ -93,14 +100,14 @@ puzzle,date,player,turns,shared,grid
 1593,2025-10-29,Jesse,X,2025-10-29T21:02,
 ```
 
-| kolom    | inhoud                                                                |
-| -------- | --------------------------------------------------------------------- |
-| `puzzle` | puzzelnummer van Woordle                                              |
-| `date`   | dag van die puzzel, `JJJJ-MM-DD`; moet kloppen met het puzzelnummer   |
-| `player` | voornaam van de speler, alleen letters                                |
-| `turns`  | `1` tot `6`, of `X` voor niet geraden                                 |
-| `shared` | moment van delen, `JJJJ-MM-DDTUU:MM`; mag leeg                        |
-| `grid`   | de rijen, `G` groen, `Y` geel, `-` mis, gescheiden door `/`; mag leeg |
+| kolom    | inhoud                                                                          |
+| -------- | ------------------------------------------------------------------------------- |
+| `puzzle` | puzzelnummer van Woordle                                                        |
+| `date`   | dag van die puzzel, `JJJJ-MM-DD`; moet kloppen met het puzzelnummer             |
+| `player` | naam van de speler: letters, cijfers, spaties, streepjes, punten en apostroffen |
+| `turns`  | `1` tot `6`, of `X` voor niet geraden                                           |
+| `shared` | moment van delen, `JJJJ-MM-DDTUU:MM`; mag leeg                                  |
+| `grid`   | de rijen, `G` groen, `Y` geel, `-` mis, gescheiden door `/`; mag leeg           |
 
 - Wie binnen een puzzel als eerste deelde, volgt uit `shared`. Bij hetzelfde tijdstip, of zonder `shared`, telt de volgorde van de regels.
 - Eén regel per speler per puzzel; een dubbele regel is een fout.
@@ -110,7 +117,6 @@ puzzle,date,player,turns,shared,grid
 ## Instellingen in `data/config.json`
 
 - `api`: adres van de server met de scoreborden
-- `defaultGroup`: code van het scorebord dat de pagina toont als er geen code in de link staat; leeg toont het beginscherm
 - `rules.failAs`: aantal beurten waarvoor een X meetelt in het gemiddelde (7)
 - `rules.minShare`: deel van de puzzels dat je gespeeld moet hebben voor klassement en prijzenkast (0.1)
 - `rules.minPerMonth`: potjes per maand voor een punt in het verloop (5)

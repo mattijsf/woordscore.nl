@@ -5,7 +5,7 @@ import { Tiles } from "./Tiles.tsx"
 export function Hero({ board }: { board: OpenBoard | null }): React.JSX.Element {
   return (
     <header className="hero">
-      <a className="logo" href="?kies" aria-label="Woordscore, naar de beginpagina">
+      <a className="logo" href="/" aria-label="Woordscore, naar de beginpagina">
         <Tiles />
       </a>
       <h1>{board ? board.data.title : "Woordscore"}</h1>

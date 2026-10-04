@@ -57,9 +57,12 @@ describe("what counts as a shared score", () => {
     expect(rows[0]).toMatchObject({ date: "2026-10-03", shared: "2026-10-04T00:10" })
   })
 
-  it("keeps the first word of the name, letters only", () => {
+  it("keeps the first word of the name, without what a name may not hold", () => {
     expect(one("03-10-2026 08:50 - Iris de Wit: ").rows[0]?.player).toBe("Iris")
     expect(one("03-10-2026 08:50 - ~ Jan-Willem 🙂: ").rows[0]?.player).toBe("Jan-Willem")
+    expect(one("03-10-2026 08:50 - D'Angelo (werk): ").rows[0]?.player).toBe("D'Angelo")
+    expect(one("03-10-2026 08:50 - J.P. Jansen: ").rows[0]?.player).toBe("J.P.")
+    expect(one("03-10-2026 08:50 - 🙂 Anna2 <3: ").rows[0]?.player).toBe("Anna2")
   })
 
   it("keeps the whole name of two senders who share a first name", () => {

@@ -1,6 +1,5 @@
 {
   "api": "/api/woordle",
-  "defaultGroup": "",
   "rules": {
     "failAs": 7,
     "minShare": 0.1,

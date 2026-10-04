@@ -2,7 +2,7 @@
 import type { StateCreator } from "zustand"
 import config from "../../data/config.json"
 import type { Aliases } from "../lib/api.ts"
-import { addScores } from "../lib/api.ts"
+import { addScores, renameBoard } from "../lib/api.ts"
 import { colorsFor } from "../lib/colors.ts"
 import type { Score } from "../lib/scores.ts"
 import { merge } from "../lib/scores.ts"
@@ -25,6 +25,8 @@ export interface ScoresSlice {
    * Answers the last puzzle on show afterwards.
    */
   keepScores: (rows: Score[], links: Aliases) => Promise<number>
+  /** gives the scoreboard another name; answers the name as the server keeps it */
+  rename: (title: string) => Promise<string>
 }
 
 export const createScoresSlice: StateCreator<BoardState, [], [], ScoresSlice> = (set, get) => ({
@@ -52,5 +54,11 @@ export const createScoresSlice: StateCreator<BoardState, [], [], ScoresSlice> = 
     set({ aliases: kept.aliases })
     get().show(merge(get().rows, kept.rows).rows)
     return get().data?.last ?? 0
+  },
+  rename: async title => {
+    const kept = await renameBoard(get().code, title)
+    set({ title: kept })
+    get().show(get().rows)
+    return kept
   },
 })

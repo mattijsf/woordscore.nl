@@ -3,21 +3,23 @@
 //   GET     /api/woordle/<code>   the scores of that scoreboard, in the standard format
 //   POST    /api/woordle/<code>   scores in the standard format. If the scoreboard exists, the
 //                                 ones not stored yet are added. If it does not, this starts it
-//                                 and answers { code, key }; that takes at least two scores.
-//   DELETE  /api/woordle/<code>   removes it; needs the key that was handed out when it was started
+//                                 (201); that takes at least two scores.
+//   PUT     /api/woordle/<code>   gives it another name (`x-title`)
+//   DELETE  /api/woordle/<code>   removes it; `x-confirm` has to repeat the code
 //
 // People pick the code themselves, and it is the only lock on a scoreboard: whoever knows it
-// can look and can add. A code is only taken once a scoreboard has been started under it.
-// So the server only ever adds. A stored score is never changed or removed, and what comes in
-// has to be a plausible score. The chat itself never arrives here; the page reads the export
-// on the visitor's device and sends the scores alone.
+// can look, add, rename and remove. A code is only taken once a scoreboard has been started
+// under it. Scores are only ever added: a stored score is never changed, and what comes in has
+// to be a plausible score. The chat itself never arrives here; the page reads the export on
+// the visitor's device and sends the scores alone.
 //
-// A name in WhatsApp can change, or differ from one phone to the next. A scoreboard therefore
-// keeps links from such a name to the player it belongs to (`x-aliases`, as JSON). Scores that
-// come in under a linked name are stored under the player. Links are only ever added too.
+// A name in WhatsApp can change, differ from one phone to the next, or simply not be what
+// people want on the scoreboard. A scoreboard therefore keeps links from a name in WhatsApp to
+// the name of the player (`x-aliases`, as JSON): a player it already has, or a new one. Scores
+// that come in under a linked name are stored under the player. Links are only ever added too.
 //
 // Storage is the KV namespace bound as WOORDLE. Per scoreboard: `group:<code>` holds its title,
-// the day it was made, the hash of its key and the linked names; `scores:<code>` the current scores;
+// the day it was made and the linked names; `scores:<code>` the current scores;
 // `prev:<code>` the scores before the last change.
 import type { Score } from "../src/lib/scores.ts"
 import { dayOf, isPlayerName, merge, parseCsv, toCsv, toDay } from "../src/lib/scores.ts"
@@ -30,7 +32,6 @@ const MAX_DAYS_LATE = 7
 const MAX_NEW_PER_DAY = 200 // scoreboards started per day, all visitors together
 const MIN_TO_START = 2 // scores an export must hold before its code is taken
 const DEFAULT_TITLE = "Woordscore"
-const ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789" // for keys; no i, l, o, 0 or 1: they are easy to mix up
 const CODE = /^[a-z0-9][a-z0-9-]{4,30}[a-z0-9]$/ // 6 to 32 characters
 const DAY = 86_400_000
 // eslint-disable-next-line no-control-regex -- control characters are what a title may not hold
@@ -40,7 +41,6 @@ const UNSAFE_IN_TITLE = /[\u0000-\u001f<>&"']/g
 interface Group {
   title: string
   made: string
-  key: string
   aliases?: Record<string, string>
 }
 
@@ -69,24 +69,15 @@ const csv = (body: string, title: string, headers: Record<string, string> = {}):
 const messageOf = (error: unknown): string =>
   error instanceof Error ? error.message : String(error)
 
-const random = (length: number): string =>
-  Array.from(
-    crypto.getRandomValues(new Uint8Array(length)),
-    byte => ALPHABET[byte % ALPHABET.length] ?? ""
-  ).join("")
-async function hash(text: string): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text))
-  return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("")
-}
-
+/** The name in a request without markup, or "" when there is none. */
 function cleanTitle(header: string | null): string {
   let title = ""
   try {
     title = decodeURIComponent(header ?? "")
   } catch {
-    // not a valid title: use the default
+    // not readable: no name
   }
-  return title.replace(UNSAFE_IN_TITLE, "").trim().slice(0, 60) || DEFAULT_TITLE
+  return title.replace(UNSAFE_IN_TITLE, "").trim().slice(0, 60)
 }
 
 /** The scores in a request, or a Refusal that says what is wrong with them. */
@@ -125,7 +116,8 @@ function checkPlayers(rows: Score[]): void {
 }
 
 async function start(request: Request, kv: KV, code: string): Promise<Response> {
-  const rows = await incoming(request)
+  const aliases = linkNames(request, {}, new Set())
+  const { rows } = merge([], underPlayer(await incoming(request), aliases))
   checkPlayers(rows)
   if (rows.length < MIN_TO_START) {
     throw new Refusal(`er zijn minstens ${MIN_TO_START} scores nodig om een scorebord te beginnen`)
@@ -141,41 +133,49 @@ async function start(request: Request, kv: KV, code: string): Promise<Response> 
   }
   await kv.put(counter, String(made + 1), { expirationTtl: 2 * 86_400 })
 
-  const key = random(16)
   const group: Group = {
-    title: cleanTitle(request.headers.get("x-title")),
+    title: cleanTitle(request.headers.get("x-title")) || DEFAULT_TITLE,
     made: new Date().toISOString().slice(0, 10),
-    key: await hash(key),
+    aliases,
   }
   await kv.put(`scores:${code}`, toCsv(rows))
   await kv.put(`group:${code}`, JSON.stringify(group))
-  return json({ code, key }, 201)
+  return json({ code }, 201)
 }
 
 const aliasHeader = (aliases: Record<string, string> | undefined): Record<string, string> => ({
   "x-aliases": encodeURIComponent(JSON.stringify(aliases ?? {})),
 })
 
-/** The stored links plus the new ones in the request. A name links to one player, and the first link stands. */
-function linkNames(request: Request, group: Group, players: Set<string>): Record<string, string> {
+/**
+ * The stored links plus the new ones in the request. A name links to one player, and the first
+ * link stands. A name that already has scores under it cannot be linked away any more.
+ */
+function linkNames(
+  request: Request,
+  stored: Record<string, string> | undefined,
+  players: Set<string>
+): Record<string, string> {
   let fresh: unknown
   try {
     fresh = JSON.parse(decodeURIComponent(request.headers.get("x-aliases") ?? "%7B%7D"))
   } catch {
     throw new Refusal("de gekoppelde namen zijn niet leesbaar")
   }
-  const aliases = { ...group.aliases }
+  const aliases = { ...stored }
   for (const [alias, player] of Object.entries(fresh ?? {})) {
     if (!isPlayerName(alias) || typeof player !== "string" || !isPlayerName(player)) {
-      throw new Refusal("een gekoppelde naam bestaat alleen uit letters")
-    }
-    if (!players.has(player)) {
-      throw new Refusal(`${player} is geen speler op dit scorebord`)
+      throw new Refusal(
+        "een naam heeft hooguit 24 tekens: letters, cijfers, spaties, streepjes, punten en apostroffen"
+      )
     }
     if (players.has(alias)) {
       throw new Refusal(`${alias} is al een speler op dit scorebord`)
     }
-    aliases[alias] ??= player
+    const target = aliases[player] ?? player // a link to a linked name goes to that name's player
+    if (target !== alias) {
+      aliases[alias] ??= target
+    }
   }
   if (Object.keys(aliases).length > MAX_ALIASES) {
     throw new Refusal("te veel gekoppelde namen")
@@ -183,15 +183,17 @@ function linkNames(request: Request, group: Group, players: Set<string>): Record
   return aliases
 }
 
-async function add(request: Request, kv: KV, code: string, group: Group): Promise<Response> {
-  const stored = (await kv.get(`scores:${code}`)) ?? ""
-  const before = parseCsv(stored, "opslag")
-  const aliases = linkNames(request, group, new Set(before.map(row => row.player)))
-  const underPlayer = (await incoming(request)).map(row => {
+const underPlayer = (rows: Score[], aliases: Record<string, string>): Score[] =>
+  rows.map(row => {
     const player = aliases[row.player]
     return player ? { ...row, player } : row
   })
-  const { rows, added } = merge(before, underPlayer)
+
+async function add(request: Request, kv: KV, code: string, group: Group): Promise<Response> {
+  const stored = (await kv.get(`scores:${code}`)) ?? ""
+  const before = parseCsv(stored, "opslag")
+  const aliases = linkNames(request, group.aliases, new Set(before.map(row => row.player)))
+  const { rows, added } = merge(before, underPlayer(await incoming(request), aliases))
   checkPlayers(rows)
   if (added) {
     if (stored) {
@@ -205,9 +207,19 @@ async function add(request: Request, kv: KV, code: string, group: Group): Promis
   return csv(toCsv(rows), group.title, { "x-added": String(added), ...aliasHeader(aliases) })
 }
 
-async function remove(request: Request, kv: KV, code: string, group: Group): Promise<Response> {
-  if ((await hash(request.headers.get("x-key") ?? "")) !== group.key) {
-    throw new Refusal("deze beheercode klopt niet", 403)
+async function rename(request: Request, kv: KV, code: string, group: Group): Promise<Response> {
+  const title = cleanTitle(request.headers.get("x-title"))
+  if (!title) {
+    throw new Refusal("vul een naam in")
+  }
+  await kv.put(`group:${code}`, JSON.stringify({ ...group, title }))
+  return json({ title })
+}
+
+async function remove(request: Request, kv: KV, code: string): Promise<Response> {
+  // the page asks the visitor to type the code first; this is that answer
+  if (request.headers.get("x-confirm") !== code) {
+    throw new Refusal("typ de code van het scorebord om het verwijderen te bevestigen")
   }
   await Promise.all(
     [`group:${code}`, `scores:${code}`, `prev:${code}`].map(name => kv.delete(name))
@@ -235,8 +247,11 @@ export async function onRequest({ request, env, params }: PagesContext): Promise
     if (request.method === "GET") {
       return csv((await kv.get(`scores:${code}`)) ?? "", group.title, aliasHeader(group.aliases))
     }
+    if (request.method === "PUT") {
+      return await rename(request, kv, code, group)
+    }
     if (request.method === "DELETE") {
-      return await remove(request, kv, code, group)
+      return await remove(request, kv, code)
     }
     throw new Refusal("dat kan hier niet", 405)
   } catch (error) {

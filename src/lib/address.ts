@@ -1,15 +1,24 @@
-// The link says which scoreboard this is: ?g=<code>. Without a code the page asks for one.
-import config from "../../data/config.json"
+// The address says which scoreboard this is: woordscore.nl/<code>. At / the page asks for a code.
+import { toCode } from "./code.ts"
 
-/** The address of the start page, where a code is asked for. */
-export const startPage = (): string => `${location.pathname}?kies`
-export const linkTo = (code: string): string => `${location.origin}${location.pathname}?g=${code}`
+export const HOME = "/"
+export const linkTo = (code: string): string => `/${code}`
 
 export function codeInAddress(): string {
-  const query = new URLSearchParams(location.search)
-  if (query.has("kies")) {
+  const [first = ""] = location.pathname.split("/").filter(Boolean)
+  if (first.includes(".")) {
+    return "" // a file, not a code
+  }
+  try {
+    return toCode(decodeURIComponent(first))
+  } catch {
     return ""
   }
-  const asked = query.get("g") ?? ""
-  return asked === "" ? config.defaultGroup : asked
+}
+
+/** One address per scoreboard: /Jansens/ and /jansens/x both become /jansens. */
+export function tidyAddress(code: string): void {
+  if (code && location.pathname !== linkTo(code)) {
+    history.replaceState(null, "", linkTo(code) + location.hash)
+  }
 }

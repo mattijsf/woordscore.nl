@@ -75,28 +75,35 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
             .
           </p>
           <p>
-            Iedereen met de link naar dit scorebord kan bijwerken; zie{" "}
-            <Term tip="delen">delen en beheer</Term>.
+            Iedereen met de code van dit scorebord kan bijwerken; zie <Term tip="delen">delen</Term>
+            .
           </p>
         </>
       ),
     },
     delen: {
-      title: "Delen en beheer",
+      title: "Delen",
       body: (
         <>
           <p>
             Dit scorebord heeft een code, die jullie zelf hebben gekozen. De code staat ook in de
-            link. Wie de code of de link kent, kan het scorebord bekijken en er scores aan
-            toevoegen.
+            link.
+          </p>
+          <p>
+            Wie de code of de link kent, kan het scorebord bekijken, er scores aan toevoegen, het
+            een andere naam geven en het verwijderen. Er is geen apart wachtwoord.
           </p>
           <p>
             Deel de code dus alleen met de mensen uit de groep. Een code die makkelijk te raden is,
             kan ook door anderen worden gevonden.
           </p>
           <p>
-            Wie het scorebord begon, kreeg ook een beheercode. Alleen met die code kan het scorebord
-            worden verwijderd. De beheercode staat niet in de link.
+            Bij het beginnen krijgt het scorebord de naam van de groep, zoals die in de bestandsnaam
+            van de export staat; anders de code. Die naam kun je dan al aanpassen, en later ook nog.
+          </p>
+          <p>
+            Een verwijderd scorebord is weg. De scores kun je terugkrijgen door onder dezelfde code
+            opnieuw te beginnen met een export; de gekozen namen en de naam van het scorebord niet.
           </p>
         </>
       ),
@@ -106,28 +113,31 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Een speler heet zoals hij of zij in de export staat: het eerste woord van de naam in
-            WhatsApp. Die voornamen worden samen met de scores bewaard. Hebben twee spelers dezelfde
-            voornaam, dan wordt van hen de hele naam gebruikt.
+            In een export staat bij elke score de naam van de afzender in WhatsApp. Daarvan gebruikt
+            het scorebord het eerste woord. Hebben twee afzenders hetzelfde eerste woord, dan
+            gebruikt het van hen de hele naam.
           </p>
           <p>
-            In een export staan de namen zoals degene die exporteert ze in zijn of haar telefoon
-            heeft opgeslagen. Dezelfde persoon kan dus in de ene export “Ruben” heten en in de
-            andere “Papa”.
+            Dat is de naam zoals degene die exporteert hem in zijn of haar telefoon heeft staan.
+            Dezelfde persoon kan dus in de ene export “Ruben” heten en in de andere “Papa”.
           </p>
           <p>
-            Voor het scorebord is een andere naam een andere speler. Verandert iemand van naam, dan
-            raken de scores verdeeld over twee spelers. Houd de namen in WhatsApp daarom gelijk.
+            Bij het beginnen van een scorebord kun je per speler kiezen hoe hij of zij op het
+            scorebord heet.
           </p>
           <p>
-            Komt er bij het bijwerken toch een nieuwe naam voor, dan vraagt de pagina of het een
-            nieuwe speler is of iemand die al meedoet onder een andere naam. Kies je het tweede, dan
-            tellen de scores onder die naam voortaan voor de bestaande speler. Eén speler kan zo
-            meerdere namen hebben.
+            Komt er bij het bijwerken een naam voor die het scorebord nog niet kent, dan kies je:
+            een nieuwe speler, met een naam naar keuze, of dezelfde speler als iemand die al
+            meedoet. Eén speler kan zo onder meerdere namen in WhatsApp bekend zijn.
           </p>
           <p>
-            Een koppeling wordt bewaard, zodat de vraag bij een volgende export niet opnieuw komt.
-            Ze kan niet ongedaan worden gemaakt.
+            Die keuze wordt bewaard, zodat de vraag bij een volgende export niet opnieuw komt. Ze
+            kan niet ongedaan worden gemaakt, en de naam van een speler kan daarna niet meer worden
+            gewijzigd.
+          </p>
+          <p>
+            Verandert iemand later van naam in WhatsApp, dan komt de vraag opnieuw. Wie dan per
+            ongeluk “nieuwe speler” kiest, verdeelt de scores over twee spelers.
           </p>
         </>
       ),

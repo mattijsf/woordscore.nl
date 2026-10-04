@@ -31,6 +31,20 @@ describe("parseCsv", () => {
     ])
   })
 
+  it.each(["Anna", "Jan-Willem", "Jan de Vries", "D'Angelo", "J.P.", "Anna 2", "Zoë", "2Pac"])(
+    'takes "%s" as a name',
+    name => {
+      expect(parseCsv(csv(`1592,2025-10-28,${name},3,,`))[0]?.player).toBe(name)
+    }
+  )
+
+  it.each(["", "-Anna", "Anna|Bram", "Anna & Bram", 'Anna "de beste"', "Anna!", "A".repeat(25)])(
+    'refuses "%s" as a name',
+    name => {
+      expect(() => parseCsv(csv(`1592,2025-10-28,${name},3,,`))).toThrow(/bij player/)
+    }
+  )
+
   it("reads nothing from an empty file", () => {
     expect(parseCsv("")).toEqual([])
   })
@@ -101,10 +115,9 @@ describe("merge", () => {
   })
 
   it("counts a score once when the new scores hold it twice", () => {
-    const first = must(stored[0])
     const twice = [
-      { ...first, puzzle: 1593, date: "2025-10-29" },
-      { ...first, puzzle: 1593, date: "2025-10-29", turns: 6 },
+      { ...must(stored[0]), puzzle: 1593, date: "2025-10-29" },
+      { ...must(stored[0]), puzzle: 1593, date: "2025-10-29", turns: 6 },
     ]
     const { rows, added } = merge(stored, twice)
     expect(added).toBe(1)

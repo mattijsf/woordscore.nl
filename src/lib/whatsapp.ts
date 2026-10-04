@@ -23,6 +23,10 @@ type Order = keyof typeof ORDERS
 type DateNumbers = [string, string, string]
 
 const two = (text: string): string => text.padStart(2, "0")
+// A word of a sender's name, without what a player's name may not hold. A word without a
+// letter is no part of a name: that drops the "~" before a name and the digits of a phone number.
+const nameWord = (word: string): string =>
+  /\p{L}/u.test(word) ? word.replace(/[^\p{L}\p{N}.'’-]/gu, "").replace(/^[^\p{L}\p{N}]+/u, "") : ""
 
 function isoDate(numbers: DateNumbers, order: Order): string | null {
   const [day, month, year] = ORDERS[order].map(i => numbers[i])
@@ -65,13 +69,7 @@ export function parseChat(text: string): Chat {
       messages.push({
         numbers: [a, b, c],
         time: `${two(String(hour))}:${minutes}`,
-        name:
-          sender === undefined
-            ? null
-            : sender
-                .split(/\s+/)
-                .map(word => word.replace(/[^\p{L}-]/gu, ""))
-                .filter(Boolean),
+        name: sender === undefined ? null : sender.split(/\s+/).map(nameWord).filter(Boolean),
         lines: [body],
       })
     } else {

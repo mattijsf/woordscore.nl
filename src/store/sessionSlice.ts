@@ -2,11 +2,11 @@
 // under a free code, or a message while loading or after an error.
 import type { StateCreator } from "zustand"
 import { codeInAddress } from "../lib/address.ts"
+import type { Aliases } from "../lib/api.ts"
 import { getBoard, removeBoard, startBoard } from "../lib/api.ts"
 import { CODE_RULES, VALID_CODE } from "../lib/code.ts"
 import { messageOf } from "../lib/messages.ts"
 import type { Score } from "../lib/scores.ts"
-import { storedKey } from "../lib/storedKey.ts"
 import type { BoardState } from "./useBoardStore.ts"
 
 export const BRAND = "Woordscore"
@@ -21,17 +21,17 @@ export interface SessionSlice {
   notice: string
   /** what the start page says under the code field */
   codeMessage: string
-  /** the key handed out when this visitor just started the scoreboard, else "" */
-  startedWith: string
+  /** whether this visitor just started the scoreboard */
+  justStarted: boolean
   /** counts the times a scoreboard was opened, so that what belongs to it starts afresh */
   opened: number
   /** loads the scoreboard in the address, or asks for a code */
-  open: (startedWith?: string) => Promise<void>
+  open: (justStarted?: boolean) => Promise<void>
   askCode: (message?: string) => void
-  /** starts a scoreboard under the free code in the address, keeps its key here and opens it */
-  startScoreboard: (rows: Score[], title: string) => Promise<void>
-  /** removes the scoreboard with the key that was handed out when it was started */
-  removeScoreboard: (key: string) => Promise<void>
+  /** starts a scoreboard under the free code in the address, and opens it */
+  startScoreboard: (rows: Score[], title: string, links: Aliases) => Promise<void>
+  /** removes the scoreboard; `confirm` is the code as the visitor typed it */
+  removeScoreboard: (confirm: string) => Promise<void>
 }
 
 const code = codeInAddress()
@@ -41,9 +41,9 @@ export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> 
   mode: code ? "loading" : "start",
   notice: "",
   codeMessage: "",
-  startedWith: "",
+  justStarted: false,
   opened: 0,
-  open: async (startedWith = "") => {
+  open: async (justStarted = false) => {
     if (!VALID_CODE.test(code)) {
       get().askCode(CODE_RULES)
       return
@@ -58,7 +58,7 @@ export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> 
       set(state => ({
         title: board.title || BRAND,
         aliases: board.aliases,
-        startedWith,
+        justStarted,
         opened: state.opened + 1,
       }))
       get().show(board.rows)
@@ -70,15 +70,10 @@ export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> 
   askCode: (message = "") => {
     set({ codeMessage: message, mode: "start" })
   },
-  startScoreboard: async (rows, title) => {
-    const key = await startBoard(code, rows, title)
-    if (key) {
-      storedKey.set(code, key)
-    }
-    await get().open(key)
+  startScoreboard: async (rows, title, links) => {
+    await get().open(await startBoard(code, rows, title, links))
   },
-  removeScoreboard: async key => {
-    await removeBoard(code, key)
-    storedKey.clear(code)
+  removeScoreboard: async confirm => {
+    await removeBoard(code, confirm)
   },
 })

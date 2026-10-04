@@ -1,7 +1,9 @@
 import type { SyntheticEvent } from "react"
 import { useState } from "react"
-import { CODE_RULES, VALID_CODE, toCode } from "../../lib/code.ts"
+import { linkTo } from "../../lib/address.ts"
+import { CODE_RULES, VALID_CODE, asTyped, losesCharacters, toCode } from "../../lib/code.ts"
 import { useBoardStore } from "../../store/useBoardStore.ts"
+import { CleanedInput } from "../common/CleanedInput.tsx"
 
 /** Asks for the code of a scoreboard, and goes there. */
 export function CodeForm(): React.JSX.Element {
@@ -16,7 +18,7 @@ export function CodeForm(): React.JSX.Element {
       setMessage(CODE_RULES)
       return
     }
-    location.search = `?g=${next}`
+    location.href = linkTo(next)
   }
   return (
     <section>
@@ -26,7 +28,7 @@ export function CodeForm(): React.JSX.Element {
         vrij, dan kun je het scorebord beginnen.
       </p>
       <form className="upload" id="enter" onSubmit={submit}>
-        <input
+        <CleanedInput
           type="text"
           id="code-field"
           className="field"
@@ -36,8 +38,15 @@ export function CodeForm(): React.JSX.Element {
           spellCheck="false"
           aria-label="Code van het scorebord"
           value={value}
-          onChange={event => {
-            setValue(event.target.value)
+          clean={asTyped}
+          onValue={(cleaned, typed) => {
+            // say what a code may hold as soon as something typed or pasted could not be kept
+            if (losesCharacters(typed)) {
+              setMessage(`${CODE_RULES} Andere tekens worden weggelaten.`)
+            } else if (!cleaned) {
+              setMessage("")
+            }
+            setValue(cleaned)
           }}
         />
         <button type="submit" className="btn go">

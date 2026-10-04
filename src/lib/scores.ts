@@ -24,7 +24,11 @@ const ANCHOR = { puzzle: 1592, date: "2025-10-28" }
 const CHECKS: Record<Column, [RegExp, string]> = {
   puzzle: [/^\d{1,6}$/, "een puzzelnummer"],
   date: [/^\d{4}-\d\d-\d\d$/, "een datum als 2026-10-03"],
-  player: [/^\p{L}[\p{L} -]{0,23}$/u, "een naam van alleen letters"],
+  // letters, digits, spaces, hyphens, full stops and apostrophes; never a comma, markup or one of | & "
+  player: [
+    /^[\p{L}\p{N}][\p{L}\p{N} .'’-]{0,23}$/u,
+    "een naam van hooguit 24 letters, cijfers, spaties, streepjes, punten en apostroffen",
+  ],
   turns: [/^[1-6X]$/i, "een getal van 1 tot 6, of X"],
   shared: [/^(\d{4}-\d\d-\d\dT\d\d:\d\d)?$/, "leeg of een moment als 2026-10-03T08:50"],
   grid: [

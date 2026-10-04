@@ -7,7 +7,7 @@ export function LinkedNames(): React.JSX.Element {
   return (
     <p className="hint" id="alias-list">
       {linked.length
-        ? `Gekoppelde namen: ${linked.map(([alias, player]) => `${alias} telt als ${player}`).join(", ")}.`
+        ? `Namen uit WhatsApp die anders op het scorebord staan: ${linked.map(([alias, player]) => `${alias} is ${player}`).join(", ")}.`
         : ""}
     </p>
   )

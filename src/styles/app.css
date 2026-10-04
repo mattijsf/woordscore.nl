@@ -20,6 +20,7 @@
   --on-yellow: #2a2205;
   --tint-green: #d5ebdd;
   --tint-yellow: #f6ebc4;
+  --danger: #b5412b;
   --d1: #17633b;
   --d2: #2e9b5f;
   --d3: #7cc68e;
@@ -45,6 +46,7 @@
     --on-yellow: #231c03;
     --tint-green: #1d4530;
     --tint-yellow: #4a3e12;
+    --danger: #f08a73;
   }
 }
 :root[data-theme="dark"] {
@@ -60,6 +62,7 @@
   --on-yellow: #231c03;
   --tint-green: #1d4530;
   --tint-yellow: #4a3e12;
+  --danger: #f08a73;
 }
 *,
 *::before,
@@ -239,6 +242,24 @@ body[data-mode="start"] .lede {
 }
 
 /* beginpagina */
+.callout {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--tint-yellow);
+  border-radius: 4px;
+  font-size: 1.05rem;
+  max-width: 60ch;
+}
+.new-code {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.cta {
+  margin: 12px 0 0;
+}
+a.btn {
+  text-decoration: none;
+}
 .steps {
   list-style: none;
   padding: 0;
@@ -742,26 +763,62 @@ dd {
 .upload {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin: 12px 0 8px;
 }
+/* knoppen als toetsen: een rand en een schaduw eronder; groen is de volgende stap */
 .btn {
   font: inherit;
-  font-weight: 650;
+  font-weight: 750;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  min-height: 44px;
-  padding: 0 16px;
+  border: 2px solid var(--muted);
+  border-radius: 8px;
+  min-height: 48px;
+  padding: 0 18px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
+  box-shadow: 0 3px 0 var(--muted);
+  margin-bottom: 3px;
+  transition:
+    transform 0.05s,
+    box-shadow 0.05s;
+}
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--muted);
 }
 .btn.go {
   background: var(--green);
   border-color: var(--green);
   color: #fff;
+  box-shadow: 0 3px 0 var(--d1);
+}
+.btn.go:active {
+  box-shadow: 0 1px 0 var(--d1);
+}
+.btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  box-shadow: 0 3px 0 var(--danger);
+}
+.btn.danger:active {
+  box-shadow: 0 1px 0 var(--danger);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.this-code {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
 }
 .btn[hidden] {
   display: none;
@@ -778,6 +835,27 @@ dd {
 }
 #link-names {
   margin: 4px 0 8px;
+}
+.who {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  max-width: 420px;
+}
+.who span {
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+.who .field {
+  flex: none;
+}
+.who small {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+.who small:empty {
+  display: none;
 }
 select.field {
   appearance: auto;

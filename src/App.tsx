@@ -12,6 +12,7 @@ import { PeriodNav } from "./components/layout/PeriodNav.tsx"
 import { Share } from "./components/share/Share.tsx"
 import { StartPage } from "./components/start/StartPage.tsx"
 import { TipSheet } from "./components/tips/TipSheet.tsx"
+import { NoBoard } from "./components/update/NoBoard.tsx"
 import { Update } from "./components/update/Update.tsx"
 import { useBodyMode } from "./hooks/useBodyMode.ts"
 import { useDocumentTitle } from "./hooks/useDocumentTitle.ts"
@@ -53,6 +54,7 @@ export function App(): React.JSX.Element {
             <Outliers period={P} />
           </>
         ) : null}
+        {mode === "new" ? <NoBoard /> : null}
         {board || mode === "new" ? <Update key={`${mode}-${opened}`} /> : null}
         {board ? (
           <>
