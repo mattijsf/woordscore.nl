@@ -1,9 +1,8 @@
 import { ranked } from "../../lib/ranking.ts"
-import { usePeriod } from "../../store/useBoardStore.ts"
+import type { Period } from "../../types/board.ts"
 import { Info } from "../tips/Info.tsx"
 
-export function Duels(): React.JSX.Element {
-  const P = usePeriod()
+export function Duels({ period: P }: { period: Period }): React.JSX.Element {
   const names = ranked(P)
     .filter(p => p.qual)
     .map(p => p.name)

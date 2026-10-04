@@ -1,11 +1,10 @@
 import { nf } from "../../lib/format.ts"
 import { WEEKDAYS } from "../../lib/weekdays.ts"
-import { usePeriod } from "../../store/useBoardStore.ts"
+import type { Period } from "../../types/board.ts"
 import { Info } from "../tips/Info.tsx"
 
 /** The average of everyone per weekday: the lightest day green, the hardest grey. */
-export function Weekdays(): React.JSX.Element {
-  const P = usePeriod()
+export function Weekdays({ period: P }: { period: Period }): React.JSX.Element {
   const known = P.weekday.filter(v => v != null)
   const lo = Math.min(...known)
   const hi = Math.max(...known)

@@ -7,36 +7,59 @@ import { Trend } from "./components/board/Trend.tsx"
 import { Weekdays } from "./components/board/Weekdays.tsx"
 import { Footer } from "./components/layout/Footer.tsx"
 import { Hero } from "./components/layout/Hero.tsx"
+import { Notice } from "./components/layout/Notice.tsx"
 import { PeriodNav } from "./components/layout/PeriodNav.tsx"
+import { Share } from "./components/share/Share.tsx"
+import { StartPage } from "./components/start/StartPage.tsx"
 import { TipSheet } from "./components/tips/TipSheet.tsx"
 import { Update } from "./components/update/Update.tsx"
+import { useBodyMode } from "./hooks/useBodyMode.ts"
 import { useDocumentTitle } from "./hooks/useDocumentTitle.ts"
 import { useHashPeriod } from "./hooks/useHashPeriod.ts"
-import { useBoardStore, useData } from "./store/useBoardStore.ts"
+import { useOpenBoard } from "./hooks/useOpenBoard.ts"
+import { BRAND } from "./store/sessionSlice.ts"
+import { useBoardStore } from "./store/useBoardStore.ts"
 
 export function App(): React.JSX.Element {
-  const { title } = useData()
-  const sync = useBoardStore(state => state.sync)
+  const mode = useBoardStore(state => state.mode)
+  const opened = useBoardStore(state => state.opened)
+  const board = useOpenBoard()
+  useBodyMode(mode)
   useHashPeriod()
-  useDocumentTitle(`${title} – scorebord`)
+  useDocumentTitle(board ? `${board.data.title} – ${BRAND}` : BRAND)
   useEffect(() => {
-    void sync()
-  }, [sync])
+    const { code, open } = useBoardStore.getState()
+    if (code) {
+      void open()
+    }
+  }, [])
+  const P = board?.period
   return (
     <>
       <div className="wrap">
-        <Hero />
+        <Hero board={board} />
       </div>
-      <PeriodNav />
+      {board ? <PeriodNav periods={board.data.periods} /> : null}
       <main className="wrap">
-        <Ranking />
-        <Trend />
-        <Weekdays />
-        <Awards />
-        <Duels />
-        <Outliers />
-        <Update />
-        <Footer />
+        {mode === "loading" || mode === "error" ? <Notice /> : null}
+        {mode === "start" ? <StartPage /> : null}
+        {P ? (
+          <>
+            <Ranking period={P} />
+            <Trend period={P} />
+            <Weekdays period={P} />
+            <Awards period={P} />
+            <Duels period={P} />
+            <Outliers period={P} />
+          </>
+        ) : null}
+        {board || mode === "new" ? <Update key={`${mode}-${opened}`} /> : null}
+        {board ? (
+          <>
+            <Share key={opened} />
+            <Footer data={board.data} />
+          </>
+        ) : null}
       </main>
       <TipSheet />
     </>

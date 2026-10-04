@@ -1,6 +1,6 @@
 {
-  "title": "Woordle-groep",
   "api": "/api/woordle",
+  "defaultGroup": "",
   "rules": {
     "failAs": 7,
     "minShare": 0.1,
@@ -8,13 +8,5 @@
     "minOutlier": 4,
     "minPerWeekday": 5,
     "minBestMonth": 10
-  },
-  "colors": {
-    "Sanne": "#2F7FD6",
-    "Iris": "#D2447F",
-    "Jesse": "#E3871C",
-    "Ruben": "#7C5BD9",
-    "Lotte": "#19A7B8",
-    "Tim": "#8B929A"
   }
 }

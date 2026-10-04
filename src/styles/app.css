@@ -218,6 +218,76 @@ section {
   margin: 0;
 }
 
+/* merk: de vakjes zijn het logo; buiten de beginpagina klein en een link naar huis */
+.logo {
+  display: inline-block;
+  text-decoration: none;
+  justify-self: start;
+}
+body:not([data-mode="start"]) .grid {
+  --t: 26px;
+  gap: 3px;
+}
+body:not([data-mode="start"]) .tile {
+  border-radius: 3px;
+}
+body[data-mode="start"] h1 {
+  font-size: clamp(2.6rem, 11vw, 4rem);
+}
+body[data-mode="start"] .lede {
+  font-size: 1.15rem;
+}
+
+/* beginpagina */
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 16px;
+}
+.steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.steps b {
+  font-size: 1.08rem;
+  font-weight: 750;
+}
+.steps p {
+  color: var(--muted);
+  max-width: 60ch;
+}
+.steps p {
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+.sample {
+  margin: 14px 0 8px;
+  padding: 14px;
+  background: var(--surface);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 12px;
+  row-gap: 10px;
+  align-items: center;
+}
+.sample figcaption {
+  grid-column: 1/-1;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: -4px;
+}
+.features .award b {
+  font-weight: 750;
+}
+.features .award .n {
+  font-size: 0.88rem;
+}
+
 /* hero */
 .hero {
   padding: 28px 0 18px;
@@ -700,8 +770,52 @@ dd {
   outline: 3px solid var(--green);
   outline-offset: 2px;
 }
-#upload-status:empty {
+#upload-status:empty,
+#share-status:empty,
+#admin-status:empty,
+#alias-list:empty {
   display: none;
+}
+#link-names {
+  margin: 4px 0 8px;
+}
+select.field {
+  appearance: auto;
+  flex: none;
+}
+.field {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.labelled {
+  display: grid;
+  gap: 4px;
+  font-size: 0.92rem;
+  font-weight: 650;
+  margin-top: 12px;
+  max-width: 420px;
+}
+.labelled .field {
+  font-weight: 400;
+  flex: none;
+}
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+#code-status:empty {
+  display: none;
+}
+footer p + p {
+  margin-top: 8px;
 }
 .how {
   margin-top: 10px;

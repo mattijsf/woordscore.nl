@@ -43,13 +43,13 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
           </span>
           <span className="facts">
             <span>
-              <b>{p.games}</b> <Term tip="potje">potjes</Term>
+              <b>{p.games}</b> <Term tip="potje">{p.games === 1 ? "potje" : "potjes"}</Term>
             </span>
             <span>
               <b>{share(p.solved, p.games)}</b> <Term tip="geraden">geraden</Term>
             </span>
             <span>
-              <b>{p.wins}</b> <Term tip="dagzege">dagzeges</Term>
+              <b>{p.wins}</b> <Term tip="dagzege">{p.wins === 1 ? "dagzege" : "dagzeges"}</Term>
             </span>
           </span>
         </span>

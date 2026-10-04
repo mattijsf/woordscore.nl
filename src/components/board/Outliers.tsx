@@ -1,9 +1,8 @@
-import { usePeriod } from "../../store/useBoardStore.ts"
+import type { Period } from "../../types/board.ts"
 import { Info } from "../tips/Info.tsx"
 import { PuzzleTable } from "./PuzzleTable.tsx"
 
-export function Outliers(): React.JSX.Element {
-  const P = usePeriod()
+export function Outliers({ period: P }: { period: Period }): React.JSX.Element {
   return (
     <section>
       <h2>

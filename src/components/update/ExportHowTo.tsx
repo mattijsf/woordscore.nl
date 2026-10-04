@@ -19,8 +19,8 @@ export function ExportHowTo(): React.JSX.Element {
         <li>Tik op “Bewaar in Bestanden”.</li>
       </ol>
       <p>
-        Tik daarna hieronder op “Export kiezen” en kies dat bestand. Android maakt een .txt-bestand,
-        iPhone een .zip-bestand met een .txt erin. Allebei werken.
+        Tik daarna hieronder op “Export kiezen” en kies dat bestand. WhatsApp maakt meestal een
+        .zip-bestand met een .txt erin, soms een los .txt-bestand. Allebei werken.
       </p>
     </details>
   )

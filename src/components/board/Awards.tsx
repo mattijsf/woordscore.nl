@@ -1,9 +1,8 @@
 import { AWARD_TIPS } from "../../content/awards.ts"
-import { usePeriod } from "../../store/useBoardStore.ts"
+import type { Period } from "../../types/board.ts"
 import { Info } from "../tips/Info.tsx"
 
-export function Awards(): React.JSX.Element {
-  const P = usePeriod()
+export function Awards({ period: P }: { period: Period }): React.JSX.Element {
   return (
     <section>
       <h2>

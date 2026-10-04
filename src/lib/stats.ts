@@ -22,7 +22,7 @@ export interface Config {
 }
 
 const DEFAULTS: Required<Config> & { title: string; rules: Rules } = {
-  title: "Woordle scorebord",
+  title: "Woordscore",
   rules: {
     failAs: 7,
     minShare: 0.1,

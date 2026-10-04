@@ -30,12 +30,16 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
           <p>Deelde iemand de score van dezelfde puzzel twee keer, dan telt de eerste keer.</p>
           <p>
             Een score telt ook niet mee als de vakjes niet bij de uitslag passen (bijvoorbeeld 4/6
-            met drie rijen), of als hij meer dan een week na de dag van de puzzel is gedeeld.
+            met drie rijen), als hij meer dan een week na de dag van de puzzel is gedeeld, of als de
+            afzender in de export geen naam heeft maar alleen een telefoonnummer.
           </p>
-          <p>Spelers heten zoals ze in de export staan: met hun voornaam uit WhatsApp.</p>
           <p>
-            De scores komen uit een export van de chat. Iedereen kan onderaan de pagina een nieuwere
-            export uploaden; zie <Term tip="upload">bijwerken</Term>.
+            Spelers heten zoals ze in de export staan: met hun voornaam uit WhatsApp. Zie{" "}
+            <Term tip="namen">namen</Term>.
+          </p>
+          <p>
+            De scores komen uit een export van de chat. Iedereen met de link kan onderaan de pagina
+            een nieuwere export uploaden; zie <Term tip="upload">bijwerken</Term>.
           </p>
           <p>
             Deze pagina loopt van puzzel {first} ({periods.all.from_}) tot en met puzzel {last} (
@@ -54,7 +58,7 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
           </p>
           <p>
             Het bestand wordt op je eigen telefoon of computer uitgelezen. Alleen de gevonden scores
-            worden naar mattix.nl gestuurd: puzzelnummer, voornaam, aantal beurten, tijdstip van
+            worden naar deze website gestuurd: puzzelnummer, voornaam, aantal beurten, tijdstip van
             delen en de kleuren van de vakjes. De berichten zelf worden niet verstuurd.
           </p>
           <p>
@@ -66,10 +70,65 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
             verwijderd, ook niet als er in jouw export iets anders staat.
           </p>
           <p>
-            De namen komen uit jouw export. Staat iemand in jouw telefoon onder een andere naam, dan
-            komt die er als nieuwe speler bij. De pagina waarschuwt daarvoor voordat je bijwerkt.
+            Staat er in jouw export een naam die het scorebord nog niet kent, dan vraagt de pagina
+            of dat een nieuwe speler is of iemand die al meedoet. Zie <Term tip="namen">namen</Term>
+            .
           </p>
-          <p>Iedereen met de link naar deze pagina kan bijwerken.</p>
+          <p>
+            Iedereen met de link naar dit scorebord kan bijwerken; zie{" "}
+            <Term tip="delen">delen en beheer</Term>.
+          </p>
+        </>
+      ),
+    },
+    delen: {
+      title: "Delen en beheer",
+      body: (
+        <>
+          <p>
+            Dit scorebord heeft een code, die jullie zelf hebben gekozen. De code staat ook in de
+            link. Wie de code of de link kent, kan het scorebord bekijken en er scores aan
+            toevoegen.
+          </p>
+          <p>
+            Deel de code dus alleen met de mensen uit de groep. Een code die makkelijk te raden is,
+            kan ook door anderen worden gevonden.
+          </p>
+          <p>
+            Wie het scorebord begon, kreeg ook een beheercode. Alleen met die code kan het scorebord
+            worden verwijderd. De beheercode staat niet in de link.
+          </p>
+        </>
+      ),
+    },
+    namen: {
+      title: "Namen",
+      body: (
+        <>
+          <p>
+            Een speler heet zoals hij of zij in de export staat: het eerste woord van de naam in
+            WhatsApp. Die voornamen worden samen met de scores bewaard. Hebben twee spelers dezelfde
+            voornaam, dan wordt van hen de hele naam gebruikt.
+          </p>
+          <p>
+            In een export staan de namen zoals degene die exporteert ze in zijn of haar telefoon
+            heeft opgeslagen. Dezelfde persoon kan dus in de ene export “Ruben” heten en in de
+            andere “Papa”.
+          </p>
+          <p>
+            Voor het scorebord is een andere naam een andere speler. Verandert iemand van naam, dan
+            raken de scores verdeeld over twee spelers. Houd de namen in WhatsApp daarom gelijk.
+          </p>
+          <p>
+            Komt er bij het bijwerken toch een nieuwe naam voor, dan vraagt de pagina of het een
+            nieuwe speler is of iemand die al meedoet onder een andere naam. Kies je het tweede, dan
+            tellen de scores onder die naam voortaan voor de bestaande speler. Eén speler kan zo
+            meerdere namen hebben.
+          </p>
+          <p>
+            Een koppeling wordt bewaard, zodat de vraag bij een volgende export niet opnieuw komt.
+            Ze kan niet ongedaan worden gemaakt.
+          </p>
         </>
       ),
     },

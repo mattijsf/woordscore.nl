@@ -1,11 +1,10 @@
 import { ranked } from "../../lib/ranking.ts"
-import { usePeriod } from "../../store/useBoardStore.ts"
+import type { Period } from "../../types/board.ts"
 import { Info } from "../tips/Info.tsx"
 import { DistributionKey } from "./DistributionKey.tsx"
 import { PlayerRow } from "./PlayerRow.tsx"
 
-export function Ranking(): React.JSX.Element {
-  const P = usePeriod()
+export function Ranking({ period: P }: { period: Period }): React.JSX.Element {
   let rank = 0
   return (
     <section>
