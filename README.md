@@ -45,8 +45,8 @@ site zijn geüpload.
 ### Bijwerken op de pagina
 
 Onderaan de pagina staat "Export kiezen". De export wordt in de browser uitgelezen
-(`src/lib/whatsapp.ts`); alleen de scores gaan naar de server, de berichten niet. Android levert
-een `.txt`, iPhone een `.zip`; beide werken.
+(`src/lib/whatsapp.ts`); alleen de scores gaan naar de server, de berichten niet. WhatsApp levert
+een `.zip` met een `.txt` erin, soms een losse `.txt`; beide werken.
 
 Iedereen met de link kan dit doen. De server (`server/woordle.ts`) voegt daarom alleen toe: een
 bewaarde score wordt nooit gewijzigd of verwijderd, en wat binnenkomt moet een geldige score zijn

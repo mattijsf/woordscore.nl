@@ -6,22 +6,21 @@ export function ExportHowTo(): React.JSX.Element {
       <h4>Android</h4>
       <ol>
         <li>Open de groep in WhatsApp.</li>
-        <li>Tik rechtsboven op de drie puntjes, dan op “Meer” en dan op “Chat exporteren”.</li>
-        <li>Kies “Zonder media”.</li>
-        <li>Bewaar het bestand op je telefoon, bijvoorbeeld in Bestanden of Drive.</li>
+        <li>
+          Tik rechtsboven op de drie puntjes (“Meer opties”), dan op “Meer” en dan op “Chat
+          exporteren”.
+        </li>
+        <li>Kies “Zonder media” als daarom wordt gevraagd.</li>
+        <li>Kies waar je de export bewaart, bijvoorbeeld in Bestanden of Drive.</li>
       </ol>
       <h4>iPhone</h4>
       <ol>
         <li>Open de groep in WhatsApp.</li>
-        <li>Tik bovenaan op de naam van de groep.</li>
-        <li>Scrol naar beneden en tik op “Exporteer chat”.</li>
-        <li>Kies “Zonder media”.</li>
-        <li>Tik op “Bewaar in Bestanden”.</li>
+        <li>Tik bovenaan op de naam van de groep en dan op “Exporteer chat”.</li>
+        <li>Kies “Zonder media” als daarom wordt gevraagd.</li>
+        <li>Kies waar je de export bewaart, bijvoorbeeld met “Bewaar in Bestanden”.</li>
       </ol>
-      <p>
-        Tik daarna hieronder op “Export kiezen” en kies dat bestand. Android maakt een .txt-bestand,
-        iPhone een .zip-bestand met een .txt erin. Allebei werken.
-      </p>
+      <p>Tik daarna hieronder op “Export kiezen” en kies het bestand dat je net bewaarde.</p>
     </details>
   )
 }
