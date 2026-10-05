@@ -1,0 +1,6 @@
+# Only the start page may be found. Scoreboards and their scores are not for search engines
+# or for AI services to read, index or learn from.
+User-agent: *
+Allow: /$
+Allow: /og.png
+Disallow: /
