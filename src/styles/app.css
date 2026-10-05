@@ -118,6 +118,10 @@ p {
   font-size: 0.92rem;
   max-width: 60ch;
 }
+.hint b {
+  color: var(--ink);
+  font-weight: 700;
+}
 section {
   padding: 34px 0 0;
 }

@@ -9,7 +9,8 @@ npm run serve
 ```
 
 `npm run serve` bouwt de pagina en start haar met de server erbij op poort 8788, ook bereikbaar
-vanaf andere apparaten op hetzelfde netwerk. De scoreborden staan dan lokaal in `.wrangler/`.
+vanaf andere apparaten op hetzelfde netwerk. De scoreborden staan dan lokaal in `.wrangler/`,
+los van de echte site.
 `npm run dev` start alleen de pagina, zonder server.
 
 ## Code
@@ -139,13 +140,12 @@ puzzle,date,player,turns,shared,grid
 - `rules.formDays`: aantal laatste puzzels waarover de vorm wordt berekend (30)
 - `rules.minForm`: potjes in die dagen om een vorm te krijgen (10)
 
-## Op mattix.nl
+## Live zetten
 
-De pagina hoort op `mattix.nl/woordle-scorebord.html` en gaat mee met een deploy van mattix.nl.
-Deze repo levert geen eigen site op:
-`npm run build` in `../mattix.nl` draait na de eigen build `scripts/install.ts` uit deze repo,
-dat de pagina opnieuw bouwt uit `data/scores.csv` en als één bestand in `dist/` van mattix.nl zet.
-Hetzelfde script zet `functions/api/woordle/[[path]].js` in mattix.nl neer, dat naar `server/woordle.ts` hier
-verwijst. Die server bewaart de scores in de KV-namespace met binding `WOORDLE` (zie `wrangler.toml`
-van mattix.nl).
-De pagina heeft `noindex`, zodat zoekmachines hem niet opnemen.
+```bash
+npm run deploy
+```
+
+Dat draait de tests, bouwt de pagina en zet haar met de server op het Cloudflare Pages-project
+`woordscore` (zie `wrangler.toml`). De scoreborden staan in de KV-namespace `WOORDSCORE`, in de
+code bereikbaar als `WOORDLE`.

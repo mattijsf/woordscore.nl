@@ -23,10 +23,13 @@ export function CodeForm(): React.JSX.Element {
   }
   return (
     <section>
-      <h2>Open jullie scorebord</h2>
+      <h2>Scorebord openen of beginnen</h2>
       <p className="hint">
-        Vul de code van jullie scorebord in. Heb je er nog geen, kies dan zelf een code. Als die
-        vrij is, kun je het scorebord beginnen.
+        <b>Openen:</b> vul de code van jullie scorebord in.
+      </p>
+      <p className="hint">
+        <b>Nieuw beginnen:</b> verzin zelf een code. Als die nog vrij is, kun je daarna een export
+        van de groepschat kiezen.
       </p>
       <form className="upload" id="enter" onSubmit={submit}>
         <CleanedInput
@@ -51,7 +54,7 @@ export function CodeForm(): React.JSX.Element {
           }}
         />
         <button type="submit" className="btn go">
-          Openen
+          Verder
         </button>
       </form>
       <p className="hint" id="code-status" role="status">

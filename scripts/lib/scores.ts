@@ -7,7 +7,7 @@ import type { Config } from "../../src/lib/stats.ts"
 
 const FILE = "data/scores.csv"
 
-export const projectPath = (relative: string): string =>
+const projectPath = (relative: string): string =>
   fileURLToPath(new URL(`../../${relative}`, import.meta.url))
 export const readScores = (): Score[] =>
   existsSync(projectPath(FILE)) ? parseCsv(readFileSync(projectPath(FILE), "utf8"), FILE) : []

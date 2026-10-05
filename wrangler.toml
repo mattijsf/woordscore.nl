@@ -1,0 +1,11 @@
+# Cloudflare Pages project for woordscore.nl.
+# The page is in dist/ after `npm run build`; the server is in functions/.
+name = "woordscore"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-08-01"
+
+# The scoreboards people made (server/woordle.ts). To look at what is stored:
+#   npx wrangler kv key list --binding WOORDLE --remote
+[[kv_namespaces]]
+binding = "WOORDLE"
+id = "bc42b2a1aca44a8eb7733439344951cc"
