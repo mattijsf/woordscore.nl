@@ -22,7 +22,7 @@ export interface Config {
 }
 
 const DEFAULTS: Required<Config> & { title: string; rules: Rules } = {
-  title: "Woordle scorebord",
+  title: "Woordscore",
   rules: {
     failAs: 7,
     minShare: 0.1,
@@ -30,6 +30,8 @@ const DEFAULTS: Required<Config> & { title: string; rules: Rules } = {
     minOutlier: 4,
     minPerWeekday: 5,
     minBestMonth: 10,
+    formDays: 30,
+    minForm: 10,
   },
   colors: {},
 }
@@ -149,6 +151,7 @@ function period(
     const openings = own.filter(g => g.green !== null)
     const avg = mean(own.map(g => g.turns))
     const cold = own.filter(g => g.rows?.[0] === "-----")
+    const recent = own.filter(g => g.number > lastNumber - rules.formDays).map(g => g.turns)
     const perMonth = months.map(month =>
       own.filter(g => monthKey(dayOf(g.number)) === month).map(g => g.turns)
     )
@@ -198,6 +201,8 @@ function period(
       six: dist[5] ?? 0,
       fails,
       qual: own.length >= rules.minShare * numbers.length,
+      form: recent.length >= rules.minForm ? mean(recent) : null,
+      formGames: recent.length,
       ones: own.filter(g => g.turns === 1).map(g => formatDay(dayOf(g.number))),
       near: count(own, g => g.failed && g.rows !== null && greens(g.rows.at(-1) ?? "") === 4),
       cold: cold.length,

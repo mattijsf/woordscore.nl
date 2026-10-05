@@ -23,6 +23,10 @@ type Order = keyof typeof ORDERS
 type DateNumbers = [string, string, string]
 
 const two = (text: string): string => text.padStart(2, "0")
+// A word of a sender's name, without what a player's name may not hold. A word without a
+// letter is no part of a name: that drops the "~" before a name and the digits of a phone number.
+const nameWord = (word: string): string =>
+  /\p{L}/u.test(word) ? word.replace(/[^\p{L}\p{N}.'’-]/gu, "").replace(/^[^\p{L}\p{N}]+/u, "") : ""
 
 function isoDate(numbers: DateNumbers, order: Order): string | null {
   const [day, month, year] = ORDERS[order].map(i => numbers[i])
@@ -43,7 +47,8 @@ function daysLate(date: string | null, puzzle: number): number | null {
 interface Message {
   numbers: DateNumbers
   time: string
-  player: string | null
+  /** the words of the sender's name that hold letters; null for a notice, which has no sender */
+  name: string[] | null
   lines: string[]
 }
 
@@ -61,15 +66,10 @@ export function parseChat(text: string): Chat {
     if (head) {
       const [, a = "", b = "", c = "", hours = "", minutes = "", half, sender, body = ""] = head
       const hour = half ? (+hours % 12) + (half.toLowerCase() === "p" ? 12 : 0) : +hours
-      const name =
-        sender
-          ?.trim()
-          .split(/\s+/)[0]
-          ?.replace(/[^\p{L}-]/gu, "") ?? ""
       messages.push({
         numbers: [a, b, c],
         time: `${two(String(hour))}:${minutes}`,
-        player: name === "" ? null : name,
+        name: sender === undefined ? null : sender.split(/\s+/).map(nameWord).filter(Boolean),
         lines: [body],
       })
     } else {
@@ -77,11 +77,22 @@ export function parseChat(text: string): Chat {
     }
   }
   const shared = messages.flatMap(message => {
-    const result = message.player ? RESULT.exec(message.lines.join("\n")) : null
-    return message.player && result
-      ? [{ ...message, player: message.player, puzzle: Number(result[1]), turns: result[2] ?? "" }]
+    const result = message.name ? RESULT.exec(message.lines.join("\n")) : null
+    return message.name && result
+      ? [{ ...message, name: message.name, puzzle: Number(result[1]), turns: result[2] ?? "" }]
       : []
   })
+
+  // A player goes by first name. Two senders with the same first name keep their whole name,
+  // so that they stay two players.
+  const sameFirstName = new Map<string | undefined, Set<string>>()
+  for (const { name } of shared) {
+    sameFirstName.set(name[0], (sameFirstName.get(name[0]) ?? new Set()).add(name.join(" ")))
+  }
+  const playerOf = (name: string[]): string =>
+    (sameFirstName.get(name[0])?.size ?? 0) > 1
+      ? name.join(" ").slice(0, 24).trim()
+      : (name[0] ?? "")
 
   // 3/10 is 3 October on one phone and 10 March on another. The puzzle number says which day
   // it was, so the order that puts the most scores on the day of their puzzle is the right one.
@@ -95,7 +106,8 @@ export function parseChat(text: string): Chat {
   const rows: Score[] = []
   const seen = new Set<string>()
   let ignored = 0
-  for (const { numbers, time, player, lines, puzzle, turns: result } of shared) {
+  for (const { numbers, time, name, lines, puzzle, turns: result } of shared) {
+    const player = playerOf(name)
     const turns = /x/i.test(result) ? FAIL : Number(result)
     const date = isoDate(numbers, order)
     const grid = lines

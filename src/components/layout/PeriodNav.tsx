@@ -1,8 +1,8 @@
-import { useBoardStore, useData } from "../../store/useBoardStore.ts"
+import { useBoardStore } from "../../store/useBoardStore.ts"
+import type { Periods } from "../../types/board.ts"
 import { Info } from "../tips/Info.tsx"
 
-export function PeriodNav(): React.JSX.Element {
-  const { periods } = useData()
+export function PeriodNav({ periods }: { periods: Periods }): React.JSX.Element {
   const period = useBoardStore(state => state.period)
   const choosePeriod = useBoardStore(state => state.choosePeriod)
   return (

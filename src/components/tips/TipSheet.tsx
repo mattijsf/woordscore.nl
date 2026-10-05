@@ -1,14 +1,15 @@
 import type { MouseEvent } from "react"
 import { useEffect, useMemo, useRef } from "react"
 import { tips } from "../../content/tips.tsx"
-import { useData } from "../../store/useBoardStore.ts"
+import { useBoardStore } from "../../store/useBoardStore.ts"
 import { useTipStore } from "../../store/useTipStore.ts"
+import { IconSlot } from "../common/Icon.tsx"
 import { InSheet } from "./InSheet.ts"
 
 /** The sheet that shows one explanation at a time. */
 export function TipSheet(): React.JSX.Element {
-  const data = useData()
-  const TIPS = useMemo(() => tips(data), [data])
+  const data = useBoardStore(state => state.data)
+  const TIPS = useMemo(() => (data ? tips(data) : {}), [data])
   const trail = useTipStore(state => state.trail)
   const back = useTipStore(state => state.back)
   const close = useTipStore(state => state.close)
@@ -40,11 +41,12 @@ export function TipSheet(): React.JSX.Element {
         <div className="tip-card" ref={card}>
           <div className="tip-head">
             <button type="button" id="tip-back" hidden={trail.length < 2} onClick={back}>
-              ‹ Terug
+              <IconSlot name="chevron-left" />
+              Terug
             </button>
             <h3 id="tip-title">{tip?.title}</h3>
             <button type="button" id="tip-close" aria-label="Sluiten" onClick={close}>
-              ×
+              <IconSlot name="x" />
             </button>
           </div>
           <div id="tip-body">{tip?.body}</div>

@@ -30,3 +30,5 @@ pre-push:
       run: npx tsc -b
     unused:
       run: npx knip
+    test:
+      run: npm test

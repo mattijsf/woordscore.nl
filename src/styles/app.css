@@ -20,6 +20,7 @@
   --on-yellow: #2a2205;
   --tint-green: #d5ebdd;
   --tint-yellow: #f6ebc4;
+  --danger: #b5412b;
   --d1: #17633b;
   --d2: #2e9b5f;
   --d3: #7cc68e;
@@ -45,6 +46,7 @@
     --on-yellow: #231c03;
     --tint-green: #1d4530;
     --tint-yellow: #4a3e12;
+    --danger: #f08a73;
   }
 }
 :root[data-theme="dark"] {
@@ -60,6 +62,7 @@
   --on-yellow: #231c03;
   --tint-green: #1d4530;
   --tint-yellow: #4a3e12;
+  --danger: #f08a73;
 }
 *,
 *::before,
@@ -135,27 +138,33 @@ section {
 }
 .info {
   font:
-    italic 700 0.82rem/1 Georgia,
+    italic 700 0.86rem/1 Georgia,
     serif;
   letter-spacing: 0;
-  color: var(--muted);
-  background: none;
-  border: 1px solid var(--muted);
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--muted);
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   flex: none;
   padding: 0;
   cursor: pointer;
+  box-shadow: 0 2px 0 var(--muted);
+}
+.info:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--muted);
 }
 .info.as-text {
   display: inline-grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   font-size: 0.7rem;
   cursor: auto;
   vertical-align: 1px;
+  box-shadow: none;
 }
 #tip {
   border: 0;
@@ -200,15 +209,22 @@ section {
 #tip-back,
 #tip-close {
   font: inherit;
-  font-weight: 650;
+  font-weight: 750;
   color: var(--ink);
-  background: var(--empty);
-  border: 0;
-  border-radius: 6px;
-  min-width: 40px;
-  min-height: 40px;
+  background: var(--surface);
+  border: 2px solid var(--muted);
+  border-radius: 8px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0 12px;
   cursor: pointer;
+  box-shadow: 0 3px 0 var(--muted);
+  margin-bottom: 3px;
+}
+#tip-back:active,
+#tip-close:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--muted);
 }
 #tip-body p {
   font-size: 0.98rem;
@@ -216,6 +232,94 @@ section {
 }
 #tip-body p:last-child {
   margin: 0;
+}
+
+/* merk: de vakjes zijn het logo; buiten de beginpagina klein en een link naar huis */
+.logo {
+  display: inline-block;
+  text-decoration: none;
+  justify-self: start;
+}
+body:not([data-mode="start"]) .grid {
+  --t: 26px;
+  gap: 3px;
+}
+body:not([data-mode="start"]) .tile {
+  border-radius: 3px;
+}
+body[data-mode="start"] h1 {
+  font-size: clamp(2.6rem, 11vw, 4rem);
+}
+body[data-mode="start"] .lede {
+  font-size: 1.15rem;
+}
+
+/* beginpagina */
+.callout {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--tint-yellow);
+  border-radius: 4px;
+  font-size: 1.05rem;
+  max-width: 60ch;
+}
+.new-code {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.cta {
+  margin: 12px 0 0;
+}
+a.btn {
+  text-decoration: none;
+}
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 16px;
+}
+.steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.steps b {
+  font-size: 1.08rem;
+  font-weight: 750;
+}
+.steps p {
+  color: var(--muted);
+  max-width: 60ch;
+}
+.steps p {
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+.sample {
+  margin: 14px 0 8px;
+  padding: 14px;
+  background: var(--surface);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 12px;
+  row-gap: 10px;
+  align-items: center;
+}
+.sample figcaption {
+  grid-column: 1/-1;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: -4px;
+}
+.features .award b {
+  font-weight: 750;
+}
+.features .award .n {
+  font-size: 0.88rem;
 }
 
 /* hero */
@@ -292,29 +396,35 @@ section {
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
 }
+/* a row of keys; the chosen one is green and pressed in */
 .seg {
   display: inline-grid;
   grid-auto-flow: column;
-  gap: 4px;
-  padding: 4px;
-  background: var(--empty);
-  border-radius: 8px;
+  gap: 8px;
+  padding-bottom: 3px;
 }
 .seg button {
   font: inherit;
-  font-weight: 650;
-  color: var(--muted);
-  background: none;
-  border: 0;
-  border-radius: 5px;
-  padding: 8px 20px;
-  min-height: 40px;
+  font-weight: 750;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--muted);
+  border-radius: 8px;
+  padding: 0 16px;
+  min-height: 42px;
   cursor: pointer;
+  box-shadow: 0 3px 0 var(--muted);
+}
+.seg button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--muted);
 }
 .seg button[aria-pressed="true"] {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 1px 0 var(--line);
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  box-shadow: 0 1px 0 var(--d1);
+  transform: translateY(2px);
 }
 button:focus-visible,
 summary:focus-visible {
@@ -460,7 +570,18 @@ summary:focus-visible {
   grid-column: 1/-1;
   font-size: 0.82rem;
   color: var(--muted);
-  margin-top: -4px;
+}
+.toggle .o,
+.toggle .c {
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 700;
+  background: var(--surface);
+  border: 2px solid var(--muted);
+  border-radius: 8px;
+  padding: 5px 12px;
+  box-shadow: 0 2px 0 var(--muted);
+  margin: 0 6px 2px 0;
 }
 .row[open] .toggle .o,
 .row:not([open]) .toggle .c {
@@ -543,27 +664,33 @@ dd {
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin: 12px 0 6px;
+  gap: 8px;
+  margin: 12px 0 9px;
 }
 .chips button {
   font: inherit;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 6px 12px;
-  min-height: 36px;
+  border: 2px solid var(--muted);
+  border-radius: 8px;
+  padding: 0 12px;
+  min-height: 38px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   cursor: pointer;
+  box-shadow: 0 3px 0 var(--muted);
+}
+.chips button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--muted);
 }
 .chips button[aria-pressed="true"] {
   border-color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--ink);
+  box-shadow: 0 1px 0 var(--ink);
+  transform: translateY(2px);
 }
 #chart svg {
   display: block;
@@ -641,13 +768,9 @@ dd {
   font-size: 0.84rem;
   color: var(--muted);
   font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
 }
 .award .info {
-  margin: -4px -3px -4px 0;
+  margin: 0;
 }
 .award .v {
   font-size: 1.55rem;
@@ -672,26 +795,62 @@ dd {
 .upload {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin: 12px 0 8px;
 }
+/* knoppen als toetsen: een rand en een schaduw eronder; groen is de volgende stap */
 .btn {
   font: inherit;
-  font-weight: 650;
+  font-weight: 750;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  min-height: 44px;
-  padding: 0 16px;
+  border: 2px solid var(--muted);
+  border-radius: 8px;
+  min-height: 48px;
+  padding: 0 18px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
+  box-shadow: 0 3px 0 var(--muted);
+  margin-bottom: 3px;
+  transition:
+    transform 0.05s,
+    box-shadow 0.05s;
+}
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--muted);
 }
 .btn.go {
   background: var(--green);
   border-color: var(--green);
   color: #fff;
+  box-shadow: 0 3px 0 var(--d1);
+}
+.btn.go:active {
+  box-shadow: 0 1px 0 var(--d1);
+}
+.btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  box-shadow: 0 3px 0 var(--danger);
+}
+.btn.danger:active {
+  box-shadow: 0 1px 0 var(--danger);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.this-code {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
 }
 .btn[hidden] {
   display: none;
@@ -700,8 +859,153 @@ dd {
   outline: 3px solid var(--green);
   outline-offset: 2px;
 }
-#upload-status:empty {
+#upload-status:empty,
+#share-status:empty,
+#admin-status:empty,
+#standing-status:empty {
   display: none;
+}
+textarea.field {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 12px;
+  line-height: 1.4;
+  resize: vertical;
+}
+/* iconen volgen de tekst waar ze bij staan */
+.icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  vertical-align: -0.2em;
+}
+[data-icon] {
+  display: inline-flex;
+}
+.btn [data-icon],
+#tip-back [data-icon] {
+  margin-right: 8px;
+}
+.streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.streak .icon {
+  color: var(--d5);
+}
+.trend .icon {
+  width: 1em;
+  height: 1em;
+  stroke-width: 3;
+}
+/* een icoon op een vakje, in de kleuren van het spel */
+.badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: #fff;
+  background: var(--miss);
+}
+.badge.g {
+  background: var(--green);
+}
+.badge.y {
+  background: var(--yellow);
+  color: var(--on-yellow);
+}
+.badge .icon {
+  width: 20px;
+  height: 20px;
+}
+.award .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+.features .badge {
+  margin-bottom: 6px;
+}
+.trend {
+  font-style: normal;
+  font-weight: 650;
+  color: var(--ink);
+  white-space: nowrap;
+}
+a.btn {
+  text-decoration: none;
+}
+#link-names {
+  margin: 4px 0 8px;
+}
+.who {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  max-width: 420px;
+}
+.who span {
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+.who .field {
+  flex: none;
+}
+.who small {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+.who small:empty {
+  display: none;
+}
+select.field {
+  appearance: auto;
+  flex: none;
+}
+.field {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.labelled {
+  display: grid;
+  gap: 4px;
+  font-size: 0.92rem;
+  font-weight: 650;
+  margin-top: 12px;
+  max-width: 420px;
+}
+.labelled .field {
+  font-weight: 400;
+  flex: none;
+}
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+#code-status:empty {
+  display: none;
+}
+.sample + .cta {
+  margin: 10px 0 14px;
+}
+footer p + p {
+  margin-top: 8px;
 }
 .how {
   margin-top: 10px;

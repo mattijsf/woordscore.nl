@@ -67,8 +67,13 @@ export default defineConfig(
     languageOptions: { globals: globals.browser },
   },
   {
-    files: ["scripts/**", "server/**", "vite.config.ts"],
+    files: ["scripts/**", "server/**", "functions/**", "test/**", "vite.config.ts"],
     languageOptions: { globals: globals.node },
+  },
+  {
+    // vitest types its asymmetric matchers, such as expect.stringContaining(), as any
+    files: ["test/**"],
+    rules: { "@typescript-eslint/no-unsafe-assignment": "off" },
   },
   {
     // the scripts are command-line tools: what they print is their output

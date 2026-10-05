@@ -1,16 +1,12 @@
-// Two Woordle rows: WINST with three yellow squares, then STAND all green.
+// The logo: WOORD with two green squares, then SCORE all green.
 const ROWS = [
-  ["W", "I", "N", "S", "T"].map((letter, i) => [letter, i < 2 ? "" : "y"] as const),
-  ["S", "T", "A", "N", "D"].map(letter => [letter, "g"] as const),
+  ["W", "O", "O", "R", "D"].map((letter, i) => [letter, i === 2 || i === 3 ? "g" : ""] as const),
+  ["S", "C", "O", "R", "E"].map(letter => [letter, "g"] as const),
 ]
 
 export function Tiles(): React.JSX.Element {
   return (
-    <div
-      className="grid"
-      role="img"
-      aria-label="Twee Woordle-rijen: WINST met drie gele vakjes, daarna STAND helemaal groen"
-    >
+    <div className="grid" aria-hidden="true">
       {ROWS.flatMap((row, r) =>
         row.map(([letter, tone], c) => (
           <span

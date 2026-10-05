@@ -15,6 +15,10 @@ export interface Rules {
   minPerWeekday: number
   /** games needed for a month to count as someone's best month */
   minBestMonth: number
+  /** form is the average over this many of the latest puzzles */
+  formDays: number
+  /** games needed in those days to have a form */
+  minForm: number
 }
 
 export interface Month {
@@ -59,6 +63,9 @@ export interface Player {
   gapFrom: string
   /** average per weekday, Monday first; null below rules.minPerWeekday */
   weekdays: (number | null)[]
+  /** the average over the latest rules.formDays puzzles; null with too few games in them */
+  form: number | null
+  formGames: number
 }
 
 export interface Award {

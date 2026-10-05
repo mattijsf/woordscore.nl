@@ -1,0 +1,12 @@
+// The tests: vitest on node, against the code in src/lib and server.
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"],
+    "resolveJsonModule": true
+  },
+  "include": ["test"]
+}
