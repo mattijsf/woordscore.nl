@@ -35,6 +35,11 @@ const DEFAULT_TITLE = "Woordscore"
 const CODE = /^[a-z0-9][a-z0-9-]{4,30}[a-z0-9]$/ // 6 to 32 characters
 const RESERVED = new Set(["voorbeeld"]) // the page shows its own example there
 const DAY = 86_400_000
+// scores are not for search engines or AI services
+const PRIVATE = {
+  "cache-control": "no-store",
+  "x-robots-tag": "noindex, nofollow, noarchive, noai, noimageai",
+}
 // eslint-disable-next-line no-control-regex -- control characters are what a title may not hold
 const UNSAFE_IN_TITLE = /[\u0000-\u001f<>&"']/g
 
@@ -56,13 +61,13 @@ class Refusal extends Error {
 const json = (body: unknown, status = 200): Response =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+    headers: { "content-type": "application/json; charset=utf-8", ...PRIVATE },
   })
 const csv = (body: string, title: string, headers: Record<string, string> = {}): Response =>
   new Response(body, {
     headers: {
       "content-type": "text/csv; charset=utf-8",
-      "cache-control": "no-store",
+      ...PRIVATE,
       "x-title": encodeURIComponent(title),
       ...headers,
     },

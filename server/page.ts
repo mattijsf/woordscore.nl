@@ -3,6 +3,10 @@
 // WhatsApp and other apps read the title, description and picture of a link from the HTML,
 // without running the page's script. So for woordscore.nl/<code> the name of that scoreboard
 // is written into the page here. Everything else about the page stays as it was built.
+//
+// It also says who may find what. Only the start page of woordscore.nl is for search engines.
+// Every scoreboard, and every other address this site answers on, tells them to stay away:
+// in the page, in a header, and in robots.txt for the ones that ask before they read.
 import type { KV, PageContext } from "./kv.ts"
 
 const BRAND = "Woordscore"
@@ -10,6 +14,8 @@ const CODE = /^[a-z0-9][a-z0-9-]{4,30}[a-z0-9]$/
 const PICTURE = "/og.png"
 // the start page, as built into the page: everything in #root, which closes the body
 const START_PAGE = /(<div id="root">)[\s\S]*(<\/div>\s*<\/body>)/
+const HOME = "woordscore.nl"
+export const KEEP_OUT = "noindex, nofollow, noarchive, noai, noimageai"
 
 const escape = (text: string): string =>
   text.replace(/[&<>"]/g, character => `&#${character.charCodeAt(0)};`)
@@ -56,6 +62,11 @@ export async function onRequest({ request, env, next }: PageContext): Promise<Re
       .replace(START_PAGE, "$1$2")
       .replace('<body data-mode="start">', '<body data-mode="loading">')
   }
+  const findable = url.hostname === HOME && url.pathname === "/"
+  html = html.replace(
+    /(<meta name="robots" content=")[^"]*(")/,
+    (_, before: string, after: string) => before + (findable ? "index, follow" : KEEP_OUT) + after
+  )
 
   const headers = new Headers(response.headers)
   // they belong to the page as it was built
@@ -63,5 +74,9 @@ export async function onRequest({ request, env, next }: PageContext): Promise<Re
     headers.delete(header)
   })
   headers.set("cache-control", "no-cache")
+  headers.set("referrer-policy", "same-origin") // a link away from a scoreboard does not give its address away
+  if (!findable) {
+    headers.set("x-robots-tag", KEEP_OUT)
+  }
   return new Response(html, { status: response.status, headers })
 }

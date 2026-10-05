@@ -25,6 +25,10 @@ export function Privacy(): React.JSX.Element {
         Iedereen die de code van een scorebord kent, kan die gegevens zien. Een scorebord verwijder
         je op het scorebord zelf, onder ‘Delen’.
       </p>
+      <p>
+        Zoekmachines en AI-diensten krijgen te horen dat ze scoreborden niet mogen lezen of opnemen.
+        Alleen deze beginpagina mag gevonden worden.
+      </p>
     </section>
   )
 }

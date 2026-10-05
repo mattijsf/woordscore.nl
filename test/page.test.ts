@@ -1,9 +1,10 @@
 // The function in front of the page: what a shared link shows.
 import { describe, expect, it } from "vitest"
 import type { KV } from "../server/kv.ts"
-import { onRequest } from "../server/page.ts"
+import { KEEP_OUT, onRequest } from "../server/page.ts"
 
 const PAGE = `<!doctype html><html><head><title>Woordscore</title>
+<meta name="robots" content="noindex, nofollow, noarchive, noai, noimageai">
 <meta property="og:title" content="Woordscore">
 <meta property="og:description" content="Het scorebord bij jullie Woordle-groep.">
 <meta property="og:url" content="https://woordscore.nl/">
@@ -22,10 +23,14 @@ const page = (): Response =>
   new Response(PAGE, { headers: { "content-type": "text/html; charset=utf-8", etag: '"abc"' } })
 const visit = (
   path: string,
-  { method = "GET", next = page }: { method?: string; next?: () => Response } = {}
+  {
+    method = "GET",
+    next = page,
+    host = "example.test",
+  }: { method?: string; next?: () => Response; host?: string } = {}
 ): Promise<Response> =>
   onRequest({
-    request: new Request(`https://example.test${path}`, { method }),
+    request: new Request(`https://${host}${path}`, { method }),
     env: { WOORDLE: kv },
     next: () => Promise.resolve(next()),
   })
@@ -88,5 +93,33 @@ describe("the start page built into the page", () => {
     const html = await (await visit("/familie-test", { next: built })).text()
     expect(html).not.toContain("Scorebord openen")
     expect(html).toContain('<body data-mode="loading"><div id="root"></div>\n</body>')
+  })
+})
+
+describe("who may find a page", () => {
+  const robots = (html: string): string | undefined =>
+    /<meta name="robots" content="([^"]*)"/.exec(html)?.[1]
+
+  it("opens the start page of woordscore.nl to search engines", async () => {
+    const response = await visit("/", { host: "woordscore.nl" })
+    expect(robots(await response.text())).toBe("index, follow")
+    expect(response.headers.get("x-robots-tag")).toBeNull()
+  })
+
+  it.each([
+    ["a scoreboard", "/familie-test", "woordscore.nl"],
+    ["a code nobody uses", "/nog-vrij-123", "woordscore.nl"],
+    ["the example", "/voorbeeld", "woordscore.nl"],
+    ["the start page on another address", "/", "woordscore.pages.dev"],
+  ])("keeps %s out", async (_, path, host) => {
+    const response = await visit(path, { host })
+    expect(robots(await response.text())).toBe(KEEP_OUT)
+    expect(response.headers.get("x-robots-tag")).toBe(KEEP_OUT)
+  })
+
+  it("does not pass the address of a scoreboard on to other sites", async () => {
+    expect(
+      (await visit("/familie-test", { host: "woordscore.nl" })).headers.get("referrer-policy")
+    ).toBe("same-origin")
   })
 })

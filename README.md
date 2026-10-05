@@ -70,6 +70,14 @@ De server is een Cloudflare Pages Function met een KV-namespace, binding `WOORDL
 scorebord: `group:<code>` (naam, datum, gekoppelde namen), `scores:<code>` (de scores) en
 `prev:<code>` (de scores voor de laatste wijziging).
 
+## Vindbaarheid
+
+Alleen de beginpagina van woordscore.nl mag in zoekmachines komen. Scoreborden niet, en hun
+scores ook niet. Dat staat op drie plekken: `public/robots.txt` (voor wie vraagt voor hij leest),
+de `robots`-tag in de pagina en de kop `X-Robots-Tag` (beide gezet door `server/page.ts`, en voor
+de scores door `server/woordle.ts`). Dit is een verzoek: een crawler die zich er niet aan houdt,
+wordt er niet door tegengehouden.
+
 ## Iconen
 
 De iconen komen uit [Lucide](https://lucide.dev) (ISC-licentie), via het pakket `lucide-react`.

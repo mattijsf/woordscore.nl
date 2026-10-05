@@ -385,6 +385,23 @@ describe("names", () => {
   })
 })
 
+describe("search engines and AI services", () => {
+  it("are told to stay away from every answer of the server", async () => {
+    await start()
+    for (const request of [
+      new Request("https://example.test/api/woordle/familie-test"),
+      new Request("https://example.test/api/woordle/bestaat-niet"),
+    ]) {
+      const response = await onRequest({
+        request,
+        env: { WOORDLE: kv },
+        params: { path: [request.url.split("/").pop() ?? ""] },
+      })
+      expect(response.headers.get("x-robots-tag")).toContain("noindex")
+    }
+  })
+})
+
 describe("renaming a scoreboard", () => {
   it("takes the new name without markup, and leaves scores and links alone", async () => {
     await start("familie-test", { title: "Oud" })
