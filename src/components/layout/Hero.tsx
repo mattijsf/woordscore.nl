@@ -22,8 +22,12 @@ export function Hero({ board }: { board: OpenBoard | null }): React.JSX.Element 
         </>
       ) : (
         <p className="lede">
-          Het scorebord bij jullie Woordle-groep. Woordscore telt de uitslagen uit jullie groepschat
-          op en laat zien wie er het beste in is.
+          Voor groepen die Woordle spelen op{" "}
+          <a href="https://woordle.nl" rel="noopener">
+            woordle.nl
+          </a>{" "}
+          en hun uitslag in WhatsApp delen. Woordscore telt die uitslagen op en laat zien wie er het
+          beste in is.
         </p>
       )}
     </header>
