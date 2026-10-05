@@ -1,6 +1,9 @@
 # Only the start page may be found. Scoreboards and their scores are not for search engines
 # or for AI services to read, index or learn from.
+#
+# Cloudflare puts its own rules above these, among them "Allow: /" for every crawler. The
+# longest rule that fits an address wins, so the rules here are written longer than that one.
 User-agent: *
 Allow: /$
 Allow: /og.png
-Disallow: /
+Disallow: /*

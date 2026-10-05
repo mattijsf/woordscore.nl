@@ -100,6 +100,7 @@ De tests leggen vast wat de site moet doen. Ze draaien met vitest, zonder browse
 | `test/server.test.ts`      | de server: codes, een scorebord beginnen, alleen toevoegen, gekoppelde namen, verwijderen   |
 | `test/page.test.ts`        | de linkvoorvertoning: naam van het scorebord in titel en omschrijving                       |
 | `test/www.test.ts`         | `www.woordscore.nl` en `woordlescore.nl` sturen door naar `woordscore.nl`                   |
+| `test/robots.test.ts`      | `robots.txt` houdt scoreborden dicht, ook onder de regels die Cloudflare erboven zet        |
 | `test/demo.test.ts`        | het voorbeeldscorebord: geldige scores die elk onderdeel vullen                             |
 
 Verandert een telregel met opzet, pas dan de test en de uitleg in `src/content/tips.tsx` tegelijk aan. De
