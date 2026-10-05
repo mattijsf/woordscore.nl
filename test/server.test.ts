@@ -109,6 +109,11 @@ describe("a code", () => {
     }
   )
 
+  it("cannot be the one the page keeps for its example", async () => {
+    expect((await call("POST", "voorbeeld", { body: TWO })).status).toBe(400)
+    expect(kv.data.size).toBe(0)
+  })
+
   it("is needed: there is nothing at /api/woordle itself", async () => {
     expect((await call("POST", undefined, { body: TWO })).status).toBe(400)
   })

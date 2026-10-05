@@ -5,7 +5,9 @@ import { codeInAddress } from "../lib/address.ts"
 import type { Aliases } from "../lib/api.ts"
 import { getBoard, removeBoard, startBoard } from "../lib/api.ts"
 import { CODE_RULES, VALID_CODE } from "../lib/code.ts"
+import { DEMO_CODE, DEMO_TITLE, demoRows } from "../lib/demo.ts"
 import { messageOf } from "../lib/messages.ts"
+import { recent } from "../lib/recent.ts"
 import type { Score } from "../lib/scores.ts"
 import type { BoardState } from "./useBoardStore.ts"
 
@@ -16,6 +18,8 @@ export type Mode = "loading" | "start" | "board" | "new" | "error"
 export interface SessionSlice {
   /** the code in the address; "" on the start page */
   code: string
+  /** whether this is the example, with invented scores made here: nothing to load or keep */
+  demo: boolean
   mode: Mode
   /** what the page says while loading, or what went wrong */
   notice: string
@@ -38,6 +42,7 @@ const code = codeInAddress()
 
 export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> = (set, get) => ({
   code,
+  demo: code === DEMO_CODE,
   mode: code ? "loading" : "start",
   notice: "",
   codeMessage: "",
@@ -48,10 +53,17 @@ export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> 
       get().askCode(CODE_RULES)
       return
     }
+    if (get().demo) {
+      set(state => ({ title: DEMO_TITLE, opened: state.opened + 1 }))
+      get().show(demoRows())
+      set({ mode: "board" })
+      return
+    }
     set({ notice: "Scorebord laden…", mode: "loading" })
     try {
       const board = await getBoard(code)
       if (!board) {
+        recent.forget(code)
         set({ mode: "new" }) // a free code: offer to start a scoreboard under it
         return
       }
@@ -63,6 +75,7 @@ export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> 
       }))
       get().show(board.rows)
       set({ mode: "board" })
+      recent.add(code, get().title)
     } catch (error) {
       set({ notice: `Het scorebord kon niet geladen worden: ${messageOf(error)}.`, mode: "error" })
     }
@@ -75,5 +88,6 @@ export const createSessionSlice: StateCreator<BoardState, [], [], SessionSlice> 
   },
   removeScoreboard: async confirm => {
     await removeBoard(code, confirm)
+    recent.forget(code)
   },
 })

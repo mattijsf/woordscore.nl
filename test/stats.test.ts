@@ -120,6 +120,30 @@ describe("a player", () => {
   })
 })
 
+describe("form", () => {
+  // puzzles 1592 to 1651: Anna plays all 60, a 5 on the first thirty and a 3 on the last thirty;
+  // Bram plays the last nine only
+  const lines = []
+  for (let n = 1592; n <= 1651; n += 1) {
+    const date = new Date(Date.UTC(2025, 9, 28) + (n - 1592) * 86_400_000)
+      .toISOString()
+      .slice(0, 10)
+    lines.push(`${n},${date},Anna,${n < 1622 ? 5 : 3},,`)
+    if (n > 1642) {
+      lines.push(`${n},${date},Bram,4,,`)
+    }
+  }
+  const period = compute(parseCsv(csv(...lines))).periods.all
+
+  it("is the average over the last thirty puzzles of the period", () => {
+    expect(player("Anna", period)).toMatchObject({ avg: 4, form: 3, formGames: 30 })
+  })
+
+  it("is left out for someone with too few games in those days", () => {
+    expect(player("Bram", period)).toMatchObject({ form: null, formGames: 9 })
+  })
+})
+
 describe("duels", () => {
   it("counts won, tied and lost on puzzles both played", () => {
     expect(all.h2h["Anna|Bram"]).toEqual([1, 1, 1])

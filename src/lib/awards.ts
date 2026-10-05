@@ -120,7 +120,7 @@ export function awards(players: Player[], puzzles: number, twins: Map<string, st
       p => p.cold,
       p => `${p.cold}×`,
       () =>
-        `eerste rij helemaal grijs${saved ? `; daarna het vaakst toch in hooguit drie beurten klaar: ${savers} (${saved}×)` : ""}`,
+        `eerste rij helemaal grijs${saved ? `. Daarna het vaakst in hooguit drie beurten klaar: ${savers} (${saved}×)` : ""}`,
       { skipZero: true }
     ),
     ...award(

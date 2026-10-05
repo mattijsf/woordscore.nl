@@ -3,6 +3,7 @@ import { HOME } from "../../lib/address.ts"
 import { toCode } from "../../lib/code.ts"
 import { messageOf } from "../../lib/messages.ts"
 import { useBoardStore } from "../../store/useBoardStore.ts"
+import { IconSlot } from "../common/Icon.tsx"
 
 /** Another name for the scoreboard, or removing it, which takes the code typed out. */
 export function Admin(): React.JSX.Element {
@@ -55,6 +56,7 @@ export function Admin(): React.JSX.Element {
           }}
         />
         <button type="button" className="btn" id="admin-rename" onClick={() => void rename()}>
+          <IconSlot name="pencil" />
           Naam wijzigen
         </button>
       </div>
@@ -86,6 +88,7 @@ export function Admin(): React.JSX.Element {
           disabled={toCode(confirmation) !== code}
           onClick={() => void remove()}
         >
+          <IconSlot name="trash" />
           Scorebord verwijderen
         </button>
       </div>

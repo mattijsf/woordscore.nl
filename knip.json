@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["scripts/*.ts", "functions/**/*.ts", "cron/*.ts"],
+  "entry": ["scripts/*.ts", "functions/**/*.ts", "cron/*.ts", "src/entry-server.tsx"],
   "project": [
     "src/**/*.{ts,tsx}",
     "server/**/*.ts",

@@ -4,6 +4,7 @@ import { linkTo } from "../../lib/address.ts"
 import { CODE_RULES, VALID_CODE, asTyped, losesCharacters, toCode } from "../../lib/code.ts"
 import { useBoardStore } from "../../store/useBoardStore.ts"
 import { CleanedInput } from "../common/CleanedInput.tsx"
+import { RecentBoards } from "./RecentBoards.tsx"
 
 /** Asks for the code of a scoreboard, and goes there. */
 export function CodeForm(): React.JSX.Element {
@@ -24,8 +25,8 @@ export function CodeForm(): React.JSX.Element {
     <section>
       <h2>Open jullie scorebord</h2>
       <p className="hint">
-        Vul de code van jullie scorebord in. Nog geen scorebord? Kies zelf een code. Is die nog
-        vrij, dan kun je het scorebord beginnen.
+        Vul de code van jullie scorebord in. Heb je er nog geen, kies dan zelf een code. Als die
+        vrij is, kun je het scorebord beginnen.
       </p>
       <form className="upload" id="enter" onSubmit={submit}>
         <CleanedInput
@@ -56,6 +57,7 @@ export function CodeForm(): React.JSX.Element {
       <p className="hint" id="code-status" role="status">
         {message}
       </p>
+      <RecentBoards />
     </section>
   )
 }

@@ -1,7 +1,7 @@
 import { useBoardStore } from "../../store/useBoardStore.ts"
+import { IconSlot } from "../common/Icon.tsx"
 import { Info } from "../tips/Info.tsx"
 import { ExportHowTo } from "./ExportHowTo.tsx"
-import { LinkedNames } from "./LinkedNames.tsx"
 import { NameReview } from "./NameReview.tsx"
 import { useUpload } from "./useUpload.ts"
 
@@ -39,6 +39,7 @@ export function Update(): React.JSX.Element {
       <ExportHowTo />
       <div className="upload">
         <label className="btn go">
+          <IconSlot name="upload" />
           Export kiezen
           <input
             type="file"
@@ -74,7 +75,6 @@ export function Update(): React.JSX.Element {
           {upload.confirmLabel}
         </button>
       </div>
-      {starting ? null : <LinkedNames />}
     </section>
   )
 }

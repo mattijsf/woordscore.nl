@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { linkTo } from "../../lib/address.ts"
 import { copyText } from "../../lib/clipboard.ts"
 import { useBoardStore } from "../../store/useBoardStore.ts"
+import { IconSlot } from "../common/Icon.tsx"
 import { Info } from "../tips/Info.tsx"
 import { Admin } from "./Admin.tsx"
 
@@ -42,6 +43,7 @@ export function Share(): React.JSX.Element {
           value={link}
         />
         <button type="button" className="btn" id="share-copy" onClick={() => void copy()}>
+          <IconSlot name="copy" />
           Kopieer link
         </button>
       </div>

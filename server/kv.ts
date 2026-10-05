@@ -15,3 +15,11 @@ export interface PagesContext {
   env: Env
   params: { path?: string | string[] }
 }
+
+/** What a Pages Function in front of the site's own files is called with. */
+export interface PageContext {
+  request: Request
+  env: Env
+  /** the file the address points at, as Pages would answer without this function */
+  next: () => Promise<Response>
+}

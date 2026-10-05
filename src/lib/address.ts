@@ -5,6 +5,9 @@ export const HOME = "/"
 export const linkTo = (code: string): string => `/${code}`
 
 export function codeInAddress(): string {
+  if (typeof location === "undefined") {
+    return "" // building the start page ahead of time, where there is no address
+  }
   const [first = ""] = location.pathname.split("/").filter(Boolean)
   if (first.includes(".")) {
     return "" // a file, not a code

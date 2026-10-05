@@ -19,6 +19,7 @@ De pagina is een React-app (React 19, state in zustand) in TypeScript:
 - `src/components/` de onderdelen van de pagina, per gebied (`board/`, `common/`, `layout/`, `share/`, `start/`, `tips/`, `update/`)
 - `src/store/` de zustand-stores; `src/hooks/` gedeelde hooks
 - `src/content/` de teksten van de uitleg
+- `src/entry-server.tsx` zet de beginpagina bij het bouwen als HTML in `index.html`, zodat zoekmachines en linkvoorvertoningen haar zonder script kunnen lezen
 - `src/lib/` rekenwerk en opmaak zonder React; `src/types/` de vorm van de gegevens
 - `server/` de Cloudflare Pages Functions, `functions/` wijst er per adres naar
 - `scripts/` de scripts voor de command line, in TypeScript die node direct draait
@@ -59,9 +60,19 @@ Pages doet dat vanzelf zolang er geen `404.html` is. Onder `/api/woordle` zit de
 - De code is het enige slot. Wie haar kent, kan ook de naam wijzigen en het scorebord
   verwijderen; voor verwijderen moet de code worden overgetypt.
 
+Voor een gedeelde link vult `server/page.ts` de naam van het scorebord in de titel en omschrijving
+van de pagina in, zodat WhatsApp die in de voorvertoning toont. Het plaatje daarbij is
+`public/og.png`; `npm run og` maakt het opnieuw uit `brand/og.html`. `/voorbeeld` is een
+scorebord met verzonnen spelers dat in de browser wordt gemaakt (`src/lib/demo.ts`).
+
 De server is een Cloudflare Pages Function met een KV-namespace, binding `WOORDLE`. Per
 scorebord: `group:<code>` (naam, datum, gekoppelde namen), `scores:<code>` (de scores) en
 `prev:<code>` (de scores voor de laatste wijziging).
+
+## Iconen
+
+De iconen komen uit [Lucide](https://lucide.dev) (ISC-licentie), via het pakket `lucide-react`.
+Welke er gebruikt worden staat in `src/components/common/Icon.tsx`. Er staan geen emoji's op de pagina.
 
 ## Testen
 
@@ -78,6 +89,8 @@ De tests leggen vast wat de site moet doen. Ze draaien met vitest, zonder browse
 | `test/export-file.test.ts` | een `.txt` lezen, en de `.txt` uit een `.zip`                                               |
 | `test/stats.test.ts`       | elk cijfer op het scorebord, tegen een kleine set scores die met de hand is uitgerekend     |
 | `test/server.test.ts`      | de server: codes, een scorebord beginnen, alleen toevoegen, gekoppelde namen, verwijderen   |
+| `test/page.test.ts`        | de linkvoorvertoning: naam van het scorebord in titel en omschrijving                       |
+| `test/demo.test.ts`        | het voorbeeldscorebord: geldige scores die elk onderdeel vullen                             |
 
 Verandert een telregel met opzet, pas dan de test en de uitleg in `src/content/tips.tsx` tegelijk aan. De
 pagina zelf (`src/App.tsx`) heeft geen tests; die is in de browser nagelopen.
@@ -123,6 +136,8 @@ puzzle,date,player,turns,shared,grid
 - `rules.minOutlier`: spelers per puzzel voor zwaarste en makkelijkste puzzels (4)
 - `rules.minPerWeekday`: potjes op een weekdag voor iemands beste en zwaarste weekdag (5)
 - `rules.minBestMonth`: potjes in een maand om als beste maand te tellen (10)
+- `rules.formDays`: aantal laatste puzzels waarover de vorm wordt berekend (30)
+- `rules.minForm`: potjes in die dagen om een vorm te krijgen (10)
 
 ## Op mattix.nl
 

@@ -1,5 +1,5 @@
 {
-  "name": "woordle-scorebord",
+  "name": "woordscore",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +12,7 @@
     "pull": "node scripts/pull.ts",
     "serve": "npm run build && wrangler pages dev dist --kv WOORDLE --ip 0.0.0.0 --port 8788 --compatibility-date 2026-08-01",
     "test": "vitest run",
+    "og": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=3000 --screenshot=public/og.png brand/og.html",
     "lint": "eslint --cache --max-warnings=0 .",
     "lint:fix": "eslint --cache --max-warnings=0 --fix .",
     "format": "prettier --write .",
@@ -22,6 +23,7 @@
     "prepare": "lefthook install"
   },
   "dependencies": {
+    "lucide-react": "^1.81.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "zustand": "^5.1.0"

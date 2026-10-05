@@ -2,6 +2,7 @@ import { nf, share } from "../../lib/format.ts"
 import { WEEKDAYS } from "../../lib/weekdays.ts"
 import { useColors } from "../../store/useBoardStore.ts"
 import type { Period, Player } from "../../types/board.ts"
+import { Icon } from "../common/Icon.tsx"
 import { Term } from "../tips/Term.tsx"
 
 const turnsLabel = (i: number): string => (i < 6 ? String(i + 1) : "X")
@@ -17,18 +18,53 @@ function weekdayExtremes(p: Player): { best: string; worst: string } | null {
   return { best: `${best.day} (${nf(best.v)})`, worst: `${worst.day} (${nf(worst.v)})` }
 }
 
+const STREAK_SHOWN_FROM = 3 // a running streak this long gets a flame behind the name
+const FORM_MARGIN = 0.1 // a form this far from the average counts as better or worse
+
+/** The form, the average over the latest puzzles, set against the average over the whole period. */
+function Verdict({ form, avg }: { form: number; avg: number }): React.JSX.Element {
+  const drift = form - avg
+  if (drift <= -FORM_MARGIN) {
+    return (
+      <>
+        <Icon name="arrow-up" /> beter
+      </>
+    )
+  }
+  if (drift >= FORM_MARGIN) {
+    return (
+      <>
+        <Icon name="arrow-down" /> slechter
+      </>
+    )
+  }
+  return (
+    <>
+      <Icon name="equal" /> gelijk
+    </>
+  )
+}
+
 const days = (n: number): string => `${n} ${n === 1 ? "dag" : "dagen"}`
 
 interface PlayerRowProps {
   player: Player
   period: Period
+  /** the number of latest puzzles a form is worked out over */
+  formDays: number
   /** place in the ranking, or null when outside it */
   rank: number | null
 }
 
 /** One player: the main figures, and everything else when opened. */
-export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React.JSX.Element {
+export function PlayerRow({
+  player: p,
+  period: P,
+  formDays,
+  rank,
+}: PlayerRowProps): React.JSX.Element {
   const COLORS = useColors()
+  const running = P.kind !== "closed"
   const most = Math.max(...p.dist)
   const week = weekdayExtremes(p)
   const label = `Verdeling: ${p.dist.map((c, i) => `${i < 6 ? i + 1 : "niet geraden"}: ${c}`).join(", ")}`
@@ -40,6 +76,12 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
           <span className="name">
             <i className="dot" style={{ background: COLORS[p.name] }} />
             {p.name}
+            {running && p.cur >= STREAK_SHOWN_FROM ? (
+              <span className="streak" title={`Reeks van ${p.cur} dagen`}>
+                <Icon name="flame" />
+                {p.cur}
+              </span>
+            ) : null}
           </span>
           <span className="facts">
             <span>
@@ -51,6 +93,14 @@ export function PlayerRow({ player: p, period: P, rank }: PlayerRowProps): React
             <span>
               <b>{p.wins}</b> <Term tip="dagzege">{p.wins === 1 ? "dagzege" : "dagzeges"}</Term>
             </span>
+            {running && p.form != null ? (
+              <span>
+                <b>{nf(p.form)}</b> <Term tip="vorm">laatste {formDays} dagen</Term>{" "}
+                <i className="trend">
+                  <Verdict form={p.form} avg={p.avg} />
+                </i>
+              </span>
+            ) : null}
           </span>
         </span>
         <span className="avg">

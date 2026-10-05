@@ -33,6 +33,7 @@ const MAX_NEW_PER_DAY = 200 // scoreboards started per day, all visitors togethe
 const MIN_TO_START = 2 // scores an export must hold before its code is taken
 const DEFAULT_TITLE = "Woordscore"
 const CODE = /^[a-z0-9][a-z0-9-]{4,30}[a-z0-9]$/ // 6 to 32 characters
+const RESERVED = new Set(["voorbeeld"]) // the page shows its own example there
 const DAY = 86_400_000
 // eslint-disable-next-line no-control-regex -- control characters are what a title may not hold
 const UNSAFE_IN_TITLE = /[\u0000-\u001f<>&"']/g
@@ -236,6 +237,9 @@ export async function onRequest({ request, env, params }: PagesContext): Promise
   try {
     if (!code || rest.length || !CODE.test(code)) {
       throw new Refusal("dit kan geen code van een scorebord zijn", 400)
+    }
+    if (RESERVED.has(code)) {
+      throw new Refusal("deze code is niet te gebruiken", 400)
     }
     const group = readGroup(await kv.get(`group:${code}`))
     if (request.method === "POST") {

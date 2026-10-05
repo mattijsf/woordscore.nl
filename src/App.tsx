@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { Awards } from "./components/board/Awards.tsx"
+import { DemoNotice } from "./components/board/DemoNotice.tsx"
 import { Duels } from "./components/board/Duels.tsx"
 import { Outliers } from "./components/board/Outliers.tsx"
 import { Ranking } from "./components/board/Ranking.tsx"
@@ -24,10 +25,11 @@ import { useBoardStore } from "./store/useBoardStore.ts"
 export function App(): React.JSX.Element {
   const mode = useBoardStore(state => state.mode)
   const opened = useBoardStore(state => state.opened)
+  const demo = useBoardStore(state => state.demo)
   const board = useOpenBoard()
   useBodyMode(mode)
   useHashPeriod()
-  useDocumentTitle(board ? `${board.data.title} – ${BRAND}` : BRAND)
+  useDocumentTitle(board ? `${board.data.title} | ${BRAND}` : BRAND)
   useEffect(() => {
     const { code, open } = useBoardStore.getState()
     if (code) {
@@ -43,10 +45,11 @@ export function App(): React.JSX.Element {
       {board ? <PeriodNav periods={board.data.periods} /> : null}
       <main className="wrap">
         {mode === "loading" || mode === "error" ? <Notice /> : null}
+        {board && demo ? <DemoNotice /> : null}
         {mode === "start" ? <StartPage /> : null}
-        {P ? (
+        {board && P ? (
           <>
-            <Ranking period={P} />
+            <Ranking period={P} formDays={board.data.rules.formDays} last={board.data.last} />
             <Trend period={P} />
             <Weekdays period={P} />
             <Awards period={P} />
@@ -55,10 +58,10 @@ export function App(): React.JSX.Element {
           </>
         ) : null}
         {mode === "new" ? <NoBoard /> : null}
-        {board || mode === "new" ? <Update key={`${mode}-${opened}`} /> : null}
+        {(board && !demo) || mode === "new" ? <Update key={`${mode}-${opened}`} /> : null}
         {board ? (
           <>
-            <Share key={opened} />
+            {demo ? null : <Share key={opened} />}
             <Footer data={board.data} />
           </>
         ) : null}

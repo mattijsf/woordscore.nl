@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { tips } from "../../content/tips.tsx"
 import { useBoardStore } from "../../store/useBoardStore.ts"
 import { useTipStore } from "../../store/useTipStore.ts"
+import { IconSlot } from "../common/Icon.tsx"
 import { InSheet } from "./InSheet.ts"
 
 /** The sheet that shows one explanation at a time. */
@@ -40,11 +41,12 @@ export function TipSheet(): React.JSX.Element {
         <div className="tip-card" ref={card}>
           <div className="tip-head">
             <button type="button" id="tip-back" hidden={trail.length < 2} onClick={back}>
-              ‹ Terug
+              <IconSlot name="chevron-left" />
+              Terug
             </button>
             <h3 id="tip-title">{tip?.title}</h3>
             <button type="button" id="tip-close" aria-label="Sluiten" onClick={close}>
-              ×
+              <IconSlot name="x" />
             </button>
           </div>
           <div id="tip-body">{tip?.body}</div>

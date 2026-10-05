@@ -19,30 +19,25 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Alle cijfers zijn berekend uit de scores die in de groepschat zijn gedeeld: berichten
-            zoals “Woordle {last} 4/6” met de gekleurde vakjes eronder.
+            De cijfers komen uit de scores die in de groepschat zijn gedeeld, zoals ‘Woordle {last}{" "}
+            4/6’ met de vakjes eronder.
           </p>
           <p>
-            Alleen die berichten tellen. Een potje dat wel gespeeld maar niet gedeeld is, telt niet
-            mee. Hetzelfde geldt voor een score die als afbeelding is gedeeld, en voor een bericht
-            dat in de export ontbreekt.
+            Een potje dat niet in de chat is gedeeld, telt niet mee. Dat geldt ook voor een score
+            die als afbeelding is gestuurd en voor berichten die in de export ontbreken.
           </p>
-          <p>Deelde iemand de score van dezelfde puzzel twee keer, dan telt de eerste keer.</p>
+          <p>Staat dezelfde puzzel twee keer van iemand in de chat, dan telt de eerste.</p>
           <p>
-            Een score telt ook niet mee als de vakjes niet bij de uitslag passen (bijvoorbeeld 4/6
-            met drie rijen), als hij meer dan een week na de dag van de puzzel is gedeeld, of als de
-            afzender in de export geen naam heeft maar alleen een telefoonnummer.
-          </p>
-          <p>
-            Spelers heten zoals ze in de export staan: met hun voornaam uit WhatsApp. Zie{" "}
-            <Term tip="namen">namen</Term>.
+            Een score wordt overgeslagen als de vakjes niet bij de uitslag passen, als hij meer dan
+            een week na de puzzel is gedeeld, of als de afzender alleen als telefoonnummer in de
+            export staat.
           </p>
           <p>
-            De scores komen uit een export van de chat. Iedereen met de link kan onderaan de pagina
-            een nieuwere export uploaden; zie <Term tip="upload">bijwerken</Term>.
+            Hoe spelers aan hun naam komen, staat bij <Term tip="namen">namen</Term>. Hoe je nieuwe
+            scores toevoegt, staat bij <Term tip="upload">bijwerken</Term>.
           </p>
           <p>
-            Deze pagina loopt van puzzel {first} ({periods.all.from_}) tot en met puzzel {last} (
+            Dit scorebord loopt van puzzel {first} ({periods.all.from_}) tot en met puzzel {last} (
             {periods.all.to}).
           </p>
         </>
@@ -53,30 +48,28 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Onder “Bijwerken” kies je een export van de groepschat. Hoe je die maakt, staat daar
-            onder “Hoe exporteer ik de chat?”.
+            Kies onder ‘Bijwerken’ een export van de groepschat. De stappen staan daar onder ‘Hoe
+            exporteer ik de chat?’.
           </p>
           <p>
-            Het bestand wordt op je eigen telefoon of computer uitgelezen. Alleen de gevonden scores
-            worden naar deze website gestuurd: puzzelnummer, voornaam, aantal beurten, tijdstip van
-            delen en de kleuren van de vakjes. De berichten zelf worden niet verstuurd.
+            Je telefoon of computer leest het bestand zelf uit. Naar deze website gaan per score het
+            puzzelnummer, de naam, het aantal beurten, het tijdstip van delen en de kleuren van de
+            vakjes. De berichten uit de chat worden niet verstuurd.
           </p>
           <p>
-            Je ziet eerst hoeveel nieuwe scores er zijn. Pas als je op “Stand bijwerken” tikt,
-            worden ze bewaard en ziet iedereen de nieuwe stand.
+            Je ziet eerst hoeveel nieuwe scores er zijn. Ze worden bewaard als je op ‘Stand
+            bijwerken’ tikt.
           </p>
           <p>
-            Bijwerken voegt alleen scores toe. Een score die al bewaard is, wordt niet gewijzigd of
-            verwijderd, ook niet als er in jouw export iets anders staat.
+            Bijwerken voegt scores toe. Wat al bewaard is, blijft staan, ook als jouw export iets
+            anders zegt.
           </p>
           <p>
-            Staat er in jouw export een naam die het scorebord nog niet kent, dan vraagt de pagina
-            of dat een nieuwe speler is of iemand die al meedoet. Zie <Term tip="namen">namen</Term>
-            .
+            Bij een naam die het scorebord nog niet kent, krijg je een vraag. Zie{" "}
+            <Term tip="namen">namen</Term>.
           </p>
           <p>
-            Iedereen met de code van dit scorebord kan bijwerken; zie <Term tip="delen">delen</Term>
-            .
+            Iedereen met de code kan bijwerken. Zie <Term tip="delen">delen</Term>.
           </p>
         </>
       ),
@@ -85,25 +78,22 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Delen",
       body: (
         <>
+          <p>Jullie hebben de code van dit scorebord zelf gekozen. Hij staat ook in de link.</p>
           <p>
-            Dit scorebord heeft een code, die jullie zelf hebben gekozen. De code staat ook in de
-            link.
+            Met de code kan iemand het scorebord bekijken, bijwerken, een andere naam geven en
+            verwijderen. Een wachtwoord is er niet.
           </p>
           <p>
-            Wie de code of de link kent, kan het scorebord bekijken, er scores aan toevoegen, het
-            een andere naam geven en het verwijderen. Er is geen apart wachtwoord.
+            Geef de code daarom alleen aan mensen uit de groep. Een code die voor de hand ligt, kan
+            een ander raden.
           </p>
           <p>
-            Deel de code dus alleen met de mensen uit de groep. Een code die makkelijk te raden is,
-            kan ook door anderen worden gevonden.
+            Het scorebord krijgt bij het beginnen de naam van de groep uit de bestandsnaam van de
+            export. Lukt dat niet, dan wordt het de code. Je kunt de naam altijd aanpassen.
           </p>
           <p>
-            Bij het beginnen krijgt het scorebord de naam van de groep, zoals die in de bestandsnaam
-            van de export staat; anders de code. Die naam kun je dan al aanpassen, en later ook nog.
-          </p>
-          <p>
-            Een verwijderd scorebord is weg. De scores kun je terugkrijgen door onder dezelfde code
-            opnieuw te beginnen met een export; de gekozen namen en de naam van het scorebord niet.
+            Na verwijderen is alles weg. Met een export kun je onder dezelfde code opnieuw beginnen.
+            De namen moet je dan opnieuw kiezen.
           </p>
         </>
       ),
@@ -113,31 +103,27 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            In een export staat bij elke score de naam van de afzender in WhatsApp. Daarvan gebruikt
-            het scorebord het eerste woord. Hebben twee afzenders hetzelfde eerste woord, dan
-            gebruikt het van hen de hele naam.
+            Bij elke score in een export staat de naam van de afzender in WhatsApp. Het scorebord
+            neemt daarvan het eerste woord. Bij twee afzenders met hetzelfde eerste woord neemt het
+            de hele naam.
           </p>
           <p>
-            Dat is de naam zoals degene die exporteert hem in zijn of haar telefoon heeft staan.
-            Dezelfde persoon kan dus in de ene export “Ruben” heten en in de andere “Papa”.
+            De export bevat de namen zoals ze in de telefoon van de exporteur staan. Dezelfde
+            persoon kan daardoor de ene keer ‘Ruben’ heten en de andere keer ‘Papa’.
+          </p>
+          <p>Bij het beginnen kies je per speler de naam op het scorebord.</p>
+          <p>
+            Bij een onbekende naam in een latere export kies je of het een nieuwe speler is, met een
+            naam naar keuze, of iemand die al meedoet. Een speler kan zo meerdere namen in WhatsApp
+            hebben.
           </p>
           <p>
-            Bij het beginnen van een scorebord kun je per speler kiezen hoe hij of zij op het
-            scorebord heet.
+            Het scorebord onthoudt die keuze en vraagt het bij een volgende export niet opnieuw.
+            Terugdraaien kan niet, en de naam van een speler ligt daarna vast.
           </p>
           <p>
-            Komt er bij het bijwerken een naam voor die het scorebord nog niet kent, dan kies je:
-            een nieuwe speler, met een naam naar keuze, of dezelfde speler als iemand die al
-            meedoet. Eén speler kan zo onder meerdere namen in WhatsApp bekend zijn.
-          </p>
-          <p>
-            Die keuze wordt bewaard, zodat de vraag bij een volgende export niet opnieuw komt. Ze
-            kan niet ongedaan worden gemaakt, en de naam van een speler kan daarna niet meer worden
-            gewijzigd.
-          </p>
-          <p>
-            Verandert iemand later van naam in WhatsApp, dan komt de vraag opnieuw. Wie dan per
-            ongeluk “nieuwe speler” kiest, verdeelt de scores over twee spelers.
+            Wie bij een bestaande speler per ongeluk ‘nieuwe speler’ kiest, verdeelt de scores over
+            twee spelers.
           </p>
         </>
       ),
@@ -146,19 +132,15 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Puzzel",
       body: (
         <>
+          <p>De Woordle van één dag. Het nummer gaat elke dag één omhoog.</p>
           <p>
-            De Woordle van één dag. Elke puzzel heeft een nummer, en dat nummer gaat elke dag één
-            omhoog.
+            Een score telt voor de dag van de puzzel, ook als hij na middernacht of de volgende
+            ochtend is gedeeld.
           </p>
           <p>
-            Een score hoort bij de dag van de puzzel, niet bij de dag waarop hij is gedeeld. Wie de
-            score pas na middernacht of de volgende ochtend deelt, krijgt hem toch op de dag van de
-            puzzel.
-          </p>
-          <p>
-            Bovenaan de pagina staat van hoeveel puzzels minstens één score is gedeeld. Bij{" "}
-            <Term tip="deelname">deelname</Term> tellen alle puzzels in de periode mee, ook die
-            waarvan niemand een score deelde.
+            Bovenaan staat van hoeveel puzzels iemand een score deelde. Bij{" "}
+            <Term tip="deelname">deelname</Term> tellen ook de puzzels mee waarvan niemand iets
+            deelde.
           </p>
         </>
       ),
@@ -167,7 +149,7 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Potje",
       body: (
         <>
-          <p>Eén gedeelde score van één speler voor één puzzel.</p>
+          <p>Een gedeelde score van één speler voor één puzzel.</p>
           <p>
             Welke scores meetellen, staat bij <Term tip="bron">waar de cijfers vandaan komen</Term>.
           </p>
@@ -179,18 +161,17 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Met de knoppen bovenaan kies je een jaar of “Altijd”. Alle cijfers op de pagina gaan dan
-            over die periode.
+            Met de knoppen bovenaan kies je een jaar of ‘Altijd’. Alle cijfers gaan dan over die
+            periode.
           </p>
           <p>
-            Een jaar bevat de puzzels van 1 januari tot en met 31 december. Het eerste jaar begint
-            bij de eerste puzzel waarvan een score is gedeeld (nr. {first}). Het lopende jaar
-            eindigt bij de laatste (nr. {last}). “Altijd” bevat alles.
+            Een jaar loopt van 1 januari tot en met 31 december. Het eerste jaar begint bij de
+            eerste gedeelde puzzel (nr. {first}) en het lopende jaar eindigt bij de laatste (nr.{" "}
+            {last}).
           </p>
           <p>
-            Ook een <Term tip="reeks">reeks</Term> wordt per periode geteld. Een reeks die over de
-            jaarwisseling loopt, is bij de losse jaren in twee stukken geknipt en staat alleen bij
-            “Altijd” in zijn geheel.
+            Een <Term tip="reeks">reeks</Term> wordt per periode geteld. Loopt een reeks door over
+            de jaarwisseling, dan zie je hem alleen bij ‘Altijd’ in zijn geheel.
           </p>
         </>
       ),
@@ -199,15 +180,14 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Beurten",
       body: (
         <>
-          <p>Het aantal pogingen dat iemand nodig had om het woord te raden: 1 tot en met 6.</p>
+          <p>Het aantal pogingen tot het woord geraden was, van 1 tot en met 6.</p>
           <p>
-            Het totaal bovenaan de pagina telt de beurten die echt gespeeld zijn. Een{" "}
-            <Term tip="x">niet-geraden woord</Term> telt daarin als 6.
+            In het totaal bovenaan telt een <Term tip="x">niet-geraden woord</Term> als 6 beurten,
+            want zoveel zijn er gespeeld.
           </p>
           <p>
-            In een <Term tip="gemiddelde">gemiddelde</Term> telt een niet-geraden woord als {fail}.
-            Daarom is het totaal gedeeld door het aantal potjes iets lager dan het gemiddelde dat
-            ernaast staat.
+            In een <Term tip="gemiddelde">gemiddelde</Term> telt het als {fail}. Het totaal gedeeld
+            door het aantal potjes komt daardoor iets lager uit dan het gemiddelde ernaast.
           </p>
         </>
       ),
@@ -217,21 +197,16 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            De beurten van alle <Term tip="potje">potjes</Term> bij elkaar opgeteld en gedeeld door
-            het aantal potjes. Hoe lager, hoe beter.
+            Alle beurten van iemands <Term tip="potje">potjes</Term> opgeteld en gedeeld door het
+            aantal potjes. Lager is beter.
           </p>
           <p>
-            Een <Term tip="x">niet-geraden woord</Term> telt als {fail} beurten. Dat is één meer dan
-            de slechtste score waarmee het woord nog geraden is. Zo is niet raden altijd slechter
-            dan raden in de zesde beurt.
+            Een <Term tip="x">niet-geraden woord</Term> telt als {fail} beurten, één meer dan raden
+            in de laatste beurt.
           </p>
+          <p>Puzzels waarvan iemand geen score deelde, tellen niet mee.</p>
           <p>
-            Een puzzel waarvan iemand geen score deelde, telt niet mee in het gemiddelde van die
-            speler.
-          </p>
-          <p>
-            Gemiddelden staan afgerond op twee decimalen. De volgorde wordt bepaald met de
-            onafgeronde getallen.
+            Je ziet twee decimalen. De volgorde in het klassement gaat op het onafgeronde getal.
           </p>
         </>
       ),
@@ -240,10 +215,10 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Niet geraden (X)",
       body: (
         <>
-          <p>Het woord is na zes beurten niet geraden. Woordle schrijft dan X/6.</p>
+          <p>Het woord is na zes beurten niet geraden. Woordle schrijft dat als X/6.</p>
           <p>
-            Een X telt als {fail} beurten in elk <Term tip="gemiddelde">gemiddelde</Term>. Een X
-            levert nooit een <Term tip="dagzege">dagzege</Term> op en beëindigt een{" "}
+            Een X telt als {fail} beurten in een <Term tip="gemiddelde">gemiddelde</Term>, levert
+            geen <Term tip="dagzege">dagzege</Term> op en beëindigt een{" "}
             <Term tip="reeks">reeks</Term>.
           </p>
         </>
@@ -254,19 +229,18 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            De spelers staan op volgorde van <Term tip="gemiddelde">gemiddeld aantal beurten</Term>,
-            de laagste bovenaan. Hebben twee spelers exact hetzelfde gemiddelde, dan staat de naam
-            die eerder in het alfabet komt bovenaan.
+            De volgorde gaat op <Term tip="gemiddelde">gemiddeld aantal beurten</Term>, met het
+            laagste bovenaan. Bij een exact gelijk gemiddelde beslist het alfabet.
           </p>
           <p>
-            Wie in de gekozen periode van minder dan {share} van de puzzels een score deelde, krijgt
-            geen plek maar een streepje en staat onderaan. Bij zo weinig potjes zegt een gemiddelde
-            te weinig. Deze spelers doen ook niet mee in de prijzenkast en de onderlinge duels.
+            Wie in de periode van minder dan {share} van de puzzels een score deelde, staat onderaan
+            met een streepje. Zo’n speler doet ook niet mee in de prijzenkast en de duels.
           </p>
           <p>
-            Bij elke speler staan het aantal <Term tip="potje">potjes</Term>, het percentage{" "}
-            <Term tip="geraden">geraden</Term>, het aantal <Term tip="dagzege">dagzeges</Term> en de{" "}
-            <Term tip="verdeling">verdeling</Term> van de beurten.
+            Per speler zie je het aantal <Term tip="potje">potjes</Term>, het percentage{" "}
+            <Term tip="geraden">geraden</Term>, het aantal <Term tip="dagzege">dagzeges</Term>, de{" "}
+            <Term tip="vorm">vorm</Term> en de <Term tip="verdeling">verdeling</Term> van de
+            beurten.
           </p>
         </>
       ),
@@ -276,13 +250,10 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Het percentage van iemands potjes waarin het woord binnen zes beurten is geraden. De
-            rest is <Term tip="x">niet geraden</Term>.
+            Het deel van iemands potjes waarin het woord is geraden. De rest is{" "}
+            <Term tip="x">niet geraden</Term>.
           </p>
-          <p>
-            Het percentage is afgerond op hele procenten. Er staat alleen 100% als echt elk potje
-            geraden is.
-          </p>
+          <p>Het percentage is afgerond. Er staat pas 100% als elk potje geraden is.</p>
         </>
       ),
     },
@@ -291,16 +262,14 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Je krijgt een dagzege als niemand de puzzel van die dag in minder beurten raadde dan
-            jij.
+            Je hebt een dagzege als niemand de puzzel van die dag in minder beurten raadde dan jij.
           </p>
           <p>
-            Een dagzege telt alleen als minstens twee spelers een score van die puzzel deelden.
-            Hebben meerdere spelers dezelfde beste score, dan krijgen ze allemaal een dagzege.
+            Er moeten minstens twee spelers een score hebben gedeeld. Bij een gelijke beste score
+            krijgen die spelers allemaal een dagzege.
           </p>
           <p>
-            Met een <Term tip="x">X</Term> krijg je nooit een dagzege, ook niet als iedereen een X
-            had.
+            Een <Term tip="x">X</Term> levert geen dagzege op, ook als iedereen een X had.
           </p>
           <p>
             <Term tip="alleen">Dagzeges alleen</Term> zijn de dagzeges die je met niemand deelde.
@@ -324,15 +293,15 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Hoe vaak iemand het woord in 1, 2, 3, 4, 5 of 6 beurten raadde, en hoe vaak het{" "}
+            Hoe vaak iemand in 1, 2, 3, 4, 5 of 6 beurten klaar was en hoe vaak het woord{" "}
             <Term tip="x">niet geraden</Term> werd.
           </p>
           <p>
-            In de gekleurde balk hoort bij elk aantal beurten een kleur. Hoe breder de kleur, hoe
-            groter het deel van iemands potjes met die score. Het cijfer in een kleurvak is het
-            aantal beurten. In een smal vak past het cijfer niet en ontbreekt het.
+            Elke kleur in de balk staat voor een aantal beurten. Een bredere kleur betekent dat die
+            score vaker voorkwam. Het cijfer in een vak is het aantal beurten en ontbreekt als het
+            vak te smal is.
           </p>
-          <p>De precieze aantallen staan onder “Meer cijfers”.</p>
+          <p>De aantallen staan onder ‘Meer cijfers’.</p>
         </>
       ),
     },
@@ -342,15 +311,15 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
         <>
           <p>
             Het aantal puzzels waarvan iemand een score deelde, als percentage van alle puzzels in
-            de periode. Puzzels waarvan niemand een score deelde, tellen ook mee in dat totaal.
+            de periode. Puzzels waarvan niemand iets deelde, tellen mee in dat totaal.
           </p>
           <p>
-            Wie onder de {share} blijft, staat buiten het <Term tip="klassement">klassement</Term>.
+            Onder de {share} sta je buiten het <Term tip="klassement">klassement</Term>.
           </p>
-          <p>De prijs “Trouwste speler” gaat naar wie de meeste scores deelde.</p>
+          <p>De prijs ‘Trouwste speler’ gaat naar wie de meeste scores deelde.</p>
           <p>
-            Het percentage is afgerond op hele procenten. Er staat alleen 100% als iemand van elke
-            puzzel een score deelde.
+            Het percentage is afgerond. Er staat pas 100% als iemand van elke puzzel een score
+            deelde.
           </p>
         </>
       ),
@@ -360,14 +329,33 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Het grootste aantal dagen achter elkaar waarop iemand een score deelde en het woord
-            raadde.
+            Het grootste aantal dagen achter elkaar met een gedeelde score waarbij het woord geraden
+            is.
           </p>
           <p>
-            Een dag zonder gedeelde score beëindigt de reeks, en een <Term tip="x">X</Term> ook.
+            Een dag zonder score of met een <Term tip="x">X</Term> beëindigt de reeks.
           </p>
           <p>
             De reeks wordt geteld binnen de gekozen <Term tip="periode">periode</Term>.
+          </p>
+        </>
+      ),
+    },
+    vorm: {
+      title: "Vorm",
+      body: (
+        <>
+          <p>
+            Het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> over de laatste{" "}
+            {rules.formDays} puzzels, tot en met puzzel {last}.
+          </p>
+          <p>
+            Erachter staat de vergelijking met het gemiddelde over de hele periode. ‘Beter’ is
+            minstens 0,10 beurt lager, ‘slechter’ minstens 0,10 hoger. Daartussen staat ‘gelijk’.
+          </p>
+          <p>
+            Bij minder dan {rules.minForm} scores in die {rules.formDays} dagen wordt geen vorm
+            getoond. Bij een afgesloten jaar ook niet.
           </p>
         </>
       ),
@@ -377,11 +365,13 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            De <Term tip="reeks">reeks</Term> die nog loopt: het aantal dagen achter elkaar, tot en
-            met de laatste puzzel op deze pagina (nr. {last}), waarop iemand een score deelde en het
-            woord raadde.
+            De <Term tip="reeks">reeks</Term> die nog loopt, geteld tot en met de laatste puzzel op
+            deze pagina (nr. {last}).
           </p>
-          <p>Wie van die laatste puzzel geen score deelde of het woord niet raadde, staat op 0.</p>
+          <p>Wie van die puzzel geen score deelde of het woord niet raadde, staat op 0.</p>
+          <p>
+            Vanaf 3 dagen staat er in het klassement een vlam met het aantal dagen achter de naam.
+          </p>
         </>
       ),
     },
@@ -390,10 +380,10 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>Hoe vaak iemand als eerste de score van een puzzel deelde.</p>
-          <p>Dit telt alleen bij puzzels waarvan minstens twee spelers een score deelden.</p>
+          <p>Dit telt bij puzzels waarvan minstens twee spelers een score deelden.</p>
           <p>
-            Het gaat om het tijdstip van het bericht in de chat, niet om het moment waarop iemand
-            speelde. Staan twee berichten in dezelfde minuut, dan telt de volgorde in de chat.
+            Het tijdstip van het bericht in de chat beslist. Bij twee berichten in dezelfde minuut
+            telt de volgorde in de chat.
           </p>
         </>
       ),
@@ -402,14 +392,11 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Na de eerste beurt",
       body: (
         <>
+          <p>Het gemiddelde aantal groene en gele vakjes in de eerste rij.</p>
           <p>
-            Het gemiddelde aantal groene en gele vakjes in de eerste rij, dus na het eerste woord.
+            Groen is een goede letter op de goede plek. Geel is een goede letter op een andere plek.
           </p>
-          <p>
-            Groen is een goede letter op de goede plek. Geel is een letter die wel in het woord zit,
-            maar op een andere plek.
-          </p>
-          <p>Dit zegt iets over het eerste woord dat iemand kiest, en over geluk.</p>
+          <p>Het hangt af van het eerste woord dat iemand kiest, en van geluk.</p>
         </>
       ),
     },
@@ -418,13 +405,13 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Het middelste tijdstip van alle berichten waarin iemand een score deelde. De helft van
-            die berichten is vroeger op de dag verstuurd, de andere helft later.
+            Het middelste tijdstip van iemands berichten met een score. De helft is vroeger op de
+            dag verstuurd en de helft later.
           </p>
-          <p>Het gaat om het moment van delen. Wanneer iemand speelde, is niet bekend.</p>
+          <p>Wanneer iemand speelde, weet het scorebord niet.</p>
           <p>
-            Alleen de tijd op de klok telt, niet de datum. Een bericht van vijf over twaalf ’s
-            nachts geldt dus als heel vroeg, niet als heel laat.
+            Alleen de tijd op de klok telt. Een bericht van vijf over twaalf ’s nachts geldt als
+            vroeg.
           </p>
         </>
       ),
@@ -434,13 +421,13 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Voor elke speler het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> over de
-            puzzels van één maand. Hoe lager de lijn, hoe beter.
+            Per speler het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> over de puzzels
+            van een maand. Een lagere lijn is beter.
           </p>
           <p>
-            Deelde een speler in een maand minder dan {rules.minPerMonth} scores, dan krijgt die
-            maand geen punt en is de lijn daar onderbroken. Een maand waarin geen enkele speler{" "}
-            {rules.minPerMonth} scores deelde, ontbreekt in de grafiek.
+            Bij minder dan {rules.minPerMonth} scores in een maand krijgt die maand geen punt en is
+            de lijn onderbroken. Een maand waarin niemand {rules.minPerMonth} scores deelde, staat
+            niet in de grafiek.
           </p>
         </>
       ),
@@ -450,13 +437,17 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Elke prijs gaat over één cijfer, berekend over de gekozen{" "}
-            <Term tip="periode">periode</Term>. De speler met de hoogste waarde wint, of bij sommige
-            prijzen de laagste. Tik op de i bij een prijs om te lezen hoe die wordt berekend.
+            Elke prijs gaat over één cijfer in de gekozen <Term tip="periode">periode</Term>. Bij de
+            meeste wint de hoogste waarde, bij een paar de laagste. Tik op de i bij een prijs voor
+            de regel.
           </p>
           <p>
-            Alleen spelers met een plek in het <Term tip="klassement">klassement</Term> doen mee.
-            Bij een gelijke stand delen de spelers de prijs.
+            Spelers zonder plek in het <Term tip="klassement">klassement</Term> doen niet mee. Bij
+            een gelijke stand delen spelers de prijs.
+          </p>
+          <p>
+            Een groen vakje staat voor een prestatie, een geel voor een gewoonte en een grijs voor
+            pech.
           </p>
         </>
       ),
@@ -466,9 +457,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Het gemiddelde aantal gekleurde vakjes in de eerste rij: groen en geel bij elkaar
-            opgeteld. De speler met het hoogste gemiddelde wint. Zie ook{" "}
-            <Term tip="opener">na de eerste beurt</Term>.
+            Het gemiddelde aantal groene en gele vakjes in de eerste rij, bij elkaar opgeteld. Het
+            hoogste gemiddelde wint. Zie <Term tip="opener">na de eerste beurt</Term>.
           </p>
         </>
       ),
@@ -478,9 +468,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            De speler die gewoonlijk het laatst op de dag een score deelt. Dat wordt gemeten met het{" "}
-            <Term tip="tijdstip">middelste tijdstip</Term> van al zijn of haar berichten met een
-            score.
+            Wie gewoonlijk het laatst op de dag deelt, gemeten met het{" "}
+            <Term tip="tijdstip">middelste tijdstip</Term> van de berichten.
           </p>
         </>
       ),
@@ -490,9 +479,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            De speler die gewoonlijk het vroegst op de dag een score deelt. Dat wordt gemeten met
-            het <Term tip="tijdstip">middelste tijdstip</Term> van al zijn of haar berichten met een
-            score.
+            Wie gewoonlijk het vroegst op de dag deelt, gemeten met het{" "}
+            <Term tip="tijdstip">middelste tijdstip</Term> van de berichten.
           </p>
         </>
       ),
@@ -501,7 +489,7 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Op het nippertje",
       body: (
         <>
-          <p>Hoe vaak iemand het woord pas in de zesde en laatste beurt raadde.</p>
+          <p>Hoe vaak iemand het woord in de zesde beurt raadde.</p>
         </>
       ),
     },
@@ -510,7 +498,7 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Het woord in de eerste beurt geraden. Iedereen die dat is gelukt staat erbij, met de
+            Het woord in de eerste beurt geraden. Iedereen bij wie dat lukte staat erbij, met de
             datum.
           </p>
         </>
@@ -521,8 +509,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Hoe vaak iemand het woord <Term tip="x">niet raadde</Term> terwijl de zesde rij vier
-            groene vakjes had: vier letters op de goede plek en één letter fout.
+            Hoe vaak iemand het woord <Term tip="x">niet raadde</Term> met vier groene vakjes in de
+            zesde rij.
           </p>
         </>
       ),
@@ -531,14 +519,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Koude start",
       body: (
         <>
-          <p>
-            Hoe vaak de eerste rij helemaal grijs was. Geen enkele letter van het eerste woord zat
-            dan in het woord van die dag.
-          </p>
-          <p>
-            Bij de prijs staat ook wie na zo’n begin het vaakst toch in hooguit drie beurten klaar
-            was.
-          </p>
+          <p>Hoe vaak de eerste rij helemaal grijs was.</p>
+          <p>Erbij staat wie na zo’n begin het vaakst in hooguit drie beurten klaar was.</p>
         </>
       ),
     },
@@ -548,13 +530,12 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
         <>
           <p>De speler van wie de scores het minst van elkaar verschillen.</p>
           <p>
-            Het getal is de standaarddeviatie: een maat voor hoe ver iemands scores gemiddeld van
-            het eigen gemiddelde af liggen. Hoe lager het getal, hoe constanter.
+            Het getal is de standaarddeviatie. Die zegt hoe ver iemands scores gemiddeld van het
+            eigen gemiddelde af liggen.
           </p>
           <p>
-            Constant is niet hetzelfde als goed. Wie altijd in 5 beurten klaar is, is constanter dan
-            wie afwisselend 2 en 4 beurten nodig heeft. Een <Term tip="x">X</Term> telt als {fail}{" "}
-            beurten.
+            Iemand die altijd 5 beurten nodig heeft, is constanter dan iemand die afwisselend 2 en 4
+            nodig heeft. Een <Term tip="x">X</Term> telt als {fail} beurten.
           </p>
         </>
       ),
@@ -564,14 +545,10 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Voor elke speler de maand met zijn of haar laagste{" "}
-            <Term tip="gemiddelde">gemiddeld aantal beurten</Term>. De prijs gaat naar de speler met
-            het laagste van al die gemiddelden.
+            De maand met iemands laagste <Term tip="gemiddelde">gemiddeld aantal beurten</Term>. De
+            prijs gaat naar het laagste maandgemiddelde van alle spelers.
           </p>
-          <p>
-            Een maand telt alleen mee als de speler in die maand minstens {rules.minBestMonth}{" "}
-            scores deelde. Anders zou een maand met een paar gelukkige dagen winnen.
-          </p>
+          <p>Een maand telt mee vanaf {rules.minBestMonth} scores van die speler.</p>
         </>
       ),
     },
@@ -579,11 +556,8 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       title: "Langste pauze",
       body: (
         <>
-          <p>Het grootste aantal dagen achter elkaar waarop iemand geen score deelde.</p>
-          <p>
-            Alleen de dagen tussen iemands eerste en laatste gedeelde score in de periode tellen. De
-            tijd daarvoor en daarna is geen pauze.
-          </p>
+          <p>Het grootste aantal dagen achter elkaar zonder gedeelde score.</p>
+          <p>Geteld wordt tussen iemands eerste en laatste score in de periode.</p>
         </>
       ),
     },
@@ -592,17 +566,11 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            De twee spelers die het vaakst bij dezelfde puzzel precies dezelfde vakjes deelden:
-            evenveel rijen, met in elke rij dezelfde kleuren op dezelfde plek.
+            De twee spelers die het vaakst bij dezelfde puzzel dezelfde vakjes deelden, met evenveel
+            rijen en in elke rij dezelfde kleuren.
           </p>
-          <p>
-            Ze kunnen daarbij verschillende woorden hebben ingevuld. De vakjes laten alleen de
-            kleuren zien, niet de letters.
-          </p>
-          <p>
-            Een woord dat in één beurt geraden is, telt niet mee. Die ene groene rij is bij iedereen
-            gelijk.
-          </p>
+          <p>Welke woorden ze invulden, is uit de vakjes niet op te maken.</p>
+          <p>Een woord dat in één beurt geraden is, telt hier niet mee.</p>
         </>
       ),
     },
@@ -612,14 +580,12 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
         <>
           <p>
             Het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> van alle potjes bij puzzels
-            van die weekdag. Het gaat om de dag van de <Term tip="puzzel">puzzel</Term>, niet om de
-            dag waarop de score is gedeeld.
+            van die weekdag. De dag van de <Term tip="puzzel">puzzel</Term> telt.
           </p>
-          <p>De verschillen tussen de dagen zijn klein en kunnen toeval zijn.</p>
+          <p>De verschillen zijn klein en kunnen toeval zijn.</p>
           <p>
-            Onder “Meer cijfers” staat bij elke speler zijn of haar beste en zwaarste weekdag. Een
-            weekdag waarop de speler minder dan {rules.minPerWeekday} scores deelde, doet daarbij
-            niet mee.
+            Onder ‘Meer cijfers’ staat per speler de beste en de zwaarste weekdag. Een weekdag telt
+            daarvoor mee vanaf {rules.minPerWeekday} scores.
           </p>
         </>
       ),
@@ -629,19 +595,18 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Voor elk tweetal spelers zijn alle puzzels geteld waarvan ze allebei een score deelden.
-            Wie de puzzel in minder beurten raadde, wint. Een <Term tip="x">X</Term> verliest van
-            elke geraden score.
+            Voor elk tweetal zijn de puzzels geteld waarvan ze allebei een score deelden. Wie minder
+            beurten nodig had, wint. Een <Term tip="x">X</Term> verliest van elke geraden score.
           </p>
           <p>
-            In elk vak staat eerst hoe vaak de speler links (de rij) won van de speler boven (de
-            kolom), en daarna hoe vaak hij of zij verloor. Puzzels met een gelijke score staan er
-            niet in; ook X tegen X is gelijk.
+            In een vak staat eerst hoe vaak de speler links won van de speler boven, en daarna hoe
+            vaak die verloor. Puzzels met een gelijke score staan er niet in. X tegen X is ook
+            gelijk.
           </p>
           <p>
-            Een groen vak betekent dat de speler links vaker won dan verloor. Een geel vak betekent
-            dat het gelijk staat. Alleen spelers met een plek in het{" "}
-            <Term tip="klassement">klassement</Term> staan in de tabel.
+            Groen betekent dat de speler links vaker won dan verloor, geel dat het gelijk staat.
+            Spelers zonder plek in het <Term tip="klassement">klassement</Term> staan niet in de
+            tabel.
           </p>
         </>
       ),
@@ -651,21 +616,17 @@ export function tips({ rules, first, last, periods }: TipData): Record<string, T
       body: (
         <>
           <p>
-            Voor elke puzzel is het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> berekend
-            van alle spelers die er een score van deelden. Een <Term tip="x">X</Term> telt als{" "}
-            {fail}.
+            Per puzzel is het <Term tip="gemiddelde">gemiddeld aantal beurten</Term> berekend van
+            iedereen die er een score van deelde. Een <Term tip="x">X</Term> telt als {fail}.
           </p>
           <p>
-            De vijf puzzels met het hoogste gemiddelde zijn de zwaarste, de vijf met het laagste
-            gemiddelde de makkelijkste. Bij een gelijk gemiddelde staat de oudste puzzel eerst.
+            De vijf hoogste gemiddelden zijn de zwaarste puzzels en de vijf laagste de makkelijkste.
+            Bij een gelijk gemiddelde staat de oudste puzzel eerst.
           </p>
+          <p>Een puzzel doet mee vanaf {rules.minOutlier} spelers.</p>
           <p>
-            Een puzzel doet alleen mee als minstens {rules.minOutlier} spelers er een score van
-            deelden. Anders bepaalt één score te veel.
-          </p>
-          <p>
-            In de tabel is een groen vak de beste score van die puzzel. Een grijs vak met X is niet
-            geraden. Een punt betekent dat de speler van die puzzel geen score deelde.
+            Groen is de beste score van die puzzel. Grijs met een X is niet geraden. Een punt
+            betekent dat de speler geen score deelde.
           </p>
         </>
       ),

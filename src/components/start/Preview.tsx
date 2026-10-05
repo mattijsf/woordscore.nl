@@ -1,3 +1,6 @@
+import type { IconName } from "../common/Icon.tsx"
+import { Icon } from "../common/Icon.tsx"
+
 const SAMPLE_STACK = [
   [2, 14, ""],
   [3, 70, "3"],
@@ -7,13 +10,13 @@ const SAMPLE_STACK = [
   [7, 6, ""],
 ] as const
 
-const FEATURES = [
-  ["Klassement", "Wie raadt het woord gemiddeld in de minste beurten, per jaar en over alles."],
-  ["Prijzenkast", "Langste reeks, meeste dagzeges, nachtuil, koude start en meer."],
-  ["Onderlinge duels", "Wie wint het vaakst van wie."],
-  ["Verloop", "Het gemiddelde per maand en per weekdag."],
-  ["Uitschieters", "De zwaarste en de makkelijkste puzzels."],
-  ["Uitleg erbij", "Bij elk cijfer staat hoe het is berekend."],
+const FEATURES: [IconName, string, string, string][] = [
+  ["list-ordered", "g", "Klassement", "Wie raadt het woord gemiddeld in de minste beurten."],
+  ["trophy", "g", "Prijzenkast", "Vijftien prijzen, van langste reeks tot koude start."],
+  ["swords", "y", "Onderlinge duels", "Wie wint het vaakst van wie."],
+  ["chart-line", "y", "Verloop", "Het gemiddelde per maand en per weekdag."],
+  ["mountain", "", "Uitschieters", "De zwaarste en de makkelijkste puzzels."],
+  ["info", "", "Uitleg erbij", "Bij elk cijfer staat hoe het is berekend."],
 ]
 
 /** What a scoreboard shows: one row of a ranking, and the parts of the page. */
@@ -52,9 +55,17 @@ export function Preview(): React.JSX.Element {
         </span>
         <figcaption>Voorbeeld</figcaption>
       </figure>
+      <p className="cta">
+        <a className="btn" href="/voorbeeld">
+          Bekijk een heel voorbeeld
+        </a>
+      </p>
       <div className="awards features">
-        {FEATURES.map(([title, text]) => (
+        {FEATURES.map(([drawing, tone, title, text]) => (
           <div key={title} className="award">
+            <span className={tone ? `badge ${tone}` : "badge"}>
+              <Icon name={drawing} />
+            </span>
             <b>{title}</b>
             <span className="n">{text}</span>
           </div>
