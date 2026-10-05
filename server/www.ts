@@ -1,5 +1,7 @@
-// Cloudflare Pages middleware: www.woordscore.nl is the same site, and everything asked there
-// is sent on to woordscore.nl, so that a scoreboard has one address.
+// Cloudflare Pages middleware: the site has one address, woordscore.nl. Its www address and the
+// second domain, woordlescore.nl, send everything on to it, so that a scoreboard has one link.
+const HOME = "woordscore.nl"
+const OTHER_NAMES = new Set(["www.woordscore.nl", "woordlescore.nl", "www.woordlescore.nl"])
 
 interface MiddlewareContext {
   request: Request
@@ -8,9 +10,13 @@ interface MiddlewareContext {
 
 export async function onRequest({ request, next }: MiddlewareContext): Promise<Response> {
   const url = new URL(request.url)
-  if (!url.hostname.startsWith("www.")) {
+  if (OTHER_NAMES.has(url.hostname)) {
+    url.hostname = HOME
+  } else if (url.hostname.startsWith("www.")) {
+    url.hostname = url.hostname.slice(4) // the same rule for a test address
+  } else {
     return next()
   }
-  url.hostname = url.hostname.slice(4)
+  url.protocol = "https:"
   return Response.redirect(url.toString(), 301)
 }
