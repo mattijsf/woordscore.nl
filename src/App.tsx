@@ -10,6 +10,7 @@ import { Footer } from "./components/layout/Footer.tsx"
 import { Hero } from "./components/layout/Hero.tsx"
 import { Notice } from "./components/layout/Notice.tsx"
 import { PeriodNav } from "./components/layout/PeriodNav.tsx"
+import { Privacy } from "./components/layout/Privacy.tsx"
 import { Share } from "./components/share/Share.tsx"
 import { StartPage } from "./components/start/StartPage.tsx"
 import { TipSheet } from "./components/tips/TipSheet.tsx"
@@ -65,6 +66,7 @@ export function App(): React.JSX.Element {
             <Footer data={board.data} />
           </>
         ) : null}
+        <Privacy />
       </main>
       <TipSheet />
     </>
