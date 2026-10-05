@@ -91,6 +91,7 @@ De tests leggen vast wat de site moet doen. Ze draaien met vitest, zonder browse
 | `test/stats.test.ts`       | elk cijfer op het scorebord, tegen een kleine set scores die met de hand is uitgerekend     |
 | `test/server.test.ts`      | de server: codes, een scorebord beginnen, alleen toevoegen, gekoppelde namen, verwijderen   |
 | `test/page.test.ts`        | de linkvoorvertoning: naam van het scorebord in titel en omschrijving                       |
+| `test/www.test.ts`         | `www.woordscore.nl` stuurt door naar `woordscore.nl`                                        |
 | `test/demo.test.ts`        | het voorbeeldscorebord: geldige scores die elk onderdeel vullen                             |
 
 Verandert een telregel met opzet, pas dan de test en de uitleg in `src/content/tips.tsx` tegelijk aan. De
