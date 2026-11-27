@@ -159,3 +159,7 @@ npm run deploy
 Dat draait de tests, bouwt de pagina en zet haar met de server op het Cloudflare Pages-project
 `woordscore` (zie `wrangler.toml`). De scoreborden staan in de KV-namespace `WOORDSCORE`, in de
 code bereikbaar als `WOORDLE`.
+
+## Licentie
+
+MIT, zie [`LICENSE`](LICENSE).
